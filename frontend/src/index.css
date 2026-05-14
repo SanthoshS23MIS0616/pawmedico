@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  color: #14213d;
+  background: #f6f2e8;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.panel {
+  @apply rounded-[28px] bg-white/90 shadow-panel backdrop-blur;
+}
+
+.button-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-ink px-5 py-3 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-coral;
+}
+
+.button-secondary {
+  @apply inline-flex items-center justify-center rounded-full border border-ink/15 bg-white px-5 py-3 font-semibold text-ink transition hover:border-coral hover:text-coral;
+}
+
+.input {
+  @apply w-full rounded-2xl border border-ink/15 bg-white px-4 py-3 text-sm text-ink outline-none transition focus:border-coral focus:ring-2 focus:ring-coral/20;
+}
+
+.label {
+  @apply mb-2 block text-sm font-semibold text-ink/80;
+}

@@ -1,0 +1,13 @@
+{
+  "name": "PawMedic Pro",
+  "short_name": "PawMedic",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f2e8",
+  "theme_color": "#14213d",
+  "description": "AI-powered veterinary care workspace for pet owners.",
+  "orientation": "portrait-primary",
+  "categories": ["medical", "productivity", "education"],
+  "lang": "en",
+  "icons": []
+}

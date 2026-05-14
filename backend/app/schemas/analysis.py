@@ -81,6 +81,7 @@ class BreedRecommendationResponse(BaseModel):
     matches: list[BreedMatch]
     source: str
     warning: str | None = None
+    dataset_size: int | None = None
 
 
 class PrescriptionMedication(BaseModel):

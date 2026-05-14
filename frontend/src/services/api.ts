@@ -100,7 +100,7 @@ export const api = {
       body: JSON.stringify(payload)
     }),
   recommendBreeds: (payload: Record<string, number>) =>
-    request<{ matches: { name: string; similarity: number; url: string; summary: string }[]; source: string; warning?: string | null }>("/recommender/breeds", {
+    request<{ matches: { name: string; similarity: number; url: string; summary: string }[]; source: string; warning?: string | null; dataset_size?: number | null }>("/recommender/breeds", {
       method: "POST",
       body: JSON.stringify(payload)
     }),

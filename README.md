@@ -8,6 +8,7 @@ PawMedic Pro is a structured full-stack veterinary care platform built with Fast
 - Breed identification from pet photos
 - Symptom-based disease prediction
 - Breed recommender flow
+- Restored animal and breed gallery workflow from the earlier project
 - AI prescription and diet plan generation
 - PawBot chat with streaming support
 - Pet dashboard with appointments, vaccinations, and weight logs
@@ -17,7 +18,7 @@ PawMedic Pro is a structured full-stack veterinary care platform built with Fast
 ## Project structure
 
 ```text
-vet-care-main/
+pawmedico/
 +-- backend/
 |   +-- app/
 |   |   +-- api/

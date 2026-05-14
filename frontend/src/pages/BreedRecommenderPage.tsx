@@ -105,6 +105,7 @@ export function BreedRecommenderPage() {
         <ResultCard title="Matches" subtitle="Top-scoring breeds, quick summaries, and direct breed reference links." badge={result?.matches?.length ? `${result.matches.length}` : undefined}>
           {loading ? <div className="mt-5"><LoadingSpinner label="Scoring breed profiles..." /></div> : null}
           <div className="space-y-4">
+            {result?.dataset_size ? <p className="text-sm text-ink/60 dark:text-paper/60">Using the restored source dataset with {result.dataset_size} dog breeds.</p> : null}
             {result?.matches?.map((match: any) => (
               <a key={match.name} className="block rounded-[24px] bg-sand p-5 transition hover:-translate-y-0.5 dark:bg-white/5" href={match.url} target="_blank" rel="noreferrer">
                 <div className="flex items-center justify-between gap-3">

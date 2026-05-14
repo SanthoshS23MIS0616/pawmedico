@@ -1,0 +1,948 @@
+{
+  "animals": [
+    {
+      "id": "Dog",
+      "name": "Dog",
+      "image": "Dog.jpeg"
+    },
+    {
+      "id": "Cat",
+      "name": "Cat",
+      "image": "Cat.jpeg"
+    },
+    {
+      "id": "Cow",
+      "name": "Cow",
+      "image": "Cow.jpeg"
+    },
+    {
+      "id": "Goat",
+      "name": "Goat",
+      "image": "Goat.jpeg"
+    },
+    {
+      "id": "Horse",
+      "name": "Horse",
+      "image": "Horse.jpeg"
+    },
+    {
+      "id": "Sheep",
+      "name": "Sheep",
+      "image": "Sheep.jpeg"
+    },
+    {
+      "id": "Rabbit",
+      "name": "Rabbit",
+      "image": "Rabbit.jpeg"
+    },
+    {
+      "id": "Pigeon",
+      "name": "Pigeon",
+      "image": "Pigeon.jpeg"
+    },
+    {
+      "id": "Ox",
+      "name": "Ox",
+      "image": "Ox.jpeg"
+    },
+    {
+      "id": "Lovebirds",
+      "name": "Lovebirds",
+      "image": "Lovebirds.jpeg"
+    },
+    {
+      "id": "Rooster",
+      "name": "Rooster",
+      "image": "Rooster.jpeg"
+    }
+  ],
+  "breedsByAnimal": {
+    "Dog": [
+      {
+        "animal": "Dog",
+        "name": "Indian Pariah",
+        "image": "Indian Pariah.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Labrador Retriever",
+        "image": "Labrador Retriever.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "German Shepherd",
+        "image": "German Shepherd.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Golden Retriever",
+        "image": "Golden Retriever.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Beagle",
+        "image": "Beagle.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Indian Spitz",
+        "image": "Indian Spitz.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Pomeranian",
+        "image": "Pomeranian.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Shih Tzu",
+        "image": "Shih Tzu.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Pug",
+        "image": "Pug.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Dachshund",
+        "image": "Dachshund.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Rajapalayam",
+        "image": "Rajapalayam.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Kanni",
+        "image": "Kanni.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Chippiparai",
+        "image": "Chippiparai.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Combai",
+        "image": "Combai.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Rottweiler",
+        "image": "Rottweiler.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Doberman Pinscher",
+        "image": "Doberman Pinscher.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Great Dane",
+        "image": "Great Dane.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Boxer",
+        "image": "Boxer.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Bulldog",
+        "image": "Bulldog.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "French Bulldog",
+        "image": "French Bulldog.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Siberian Husky",
+        "image": "Siberian Husky.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Saint Bernard",
+        "image": "Saint Bernard.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Maltese",
+        "image": "Maltese.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Lhasa Apso",
+        "image": "Lhasa Apso.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Pembroke Welsh Corgi",
+        "image": "Pembroke Welsh Corgi.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Chihuahua",
+        "image": "Chihuahua.jpeg"
+      },
+      {
+        "animal": "Dog",
+        "name": "Dalmatian",
+        "image": "Dalmatian.jpeg"
+      }
+    ],
+    "Cat": [
+      {
+        "animal": "Cat",
+        "name": "Indian Billi",
+        "image": "Indian Billi.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Persian Cat",
+        "image": "Persian Cat.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Siamese Cat",
+        "image": "Siamese Cat.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Maine Coon",
+        "image": "Maine Coon.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Himalayan Cat",
+        "image": "Himalayan Cat.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Bombay Cat",
+        "image": "Bombay Cat.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Bengal Cat",
+        "image": "Bengal Cat.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Ragdoll",
+        "image": "Ragdoll.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "British Shorthair",
+        "image": "British Shorthair.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Turkish Angora",
+        "image": "Turkish Angora.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Russian Blue",
+        "image": "Russian Blue.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Scottish Fold",
+        "image": "Scottish Fold.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "American Shorthair",
+        "image": "American Shorthair.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Burmese Cat",
+        "image": "Burmese Cat.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Abyssinian Cat",
+        "image": "Abyssinian Cat.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Exotic Shorthair",
+        "image": "Exotic Shorthair.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Oriental Shorthair",
+        "image": "Oriental Shorthair.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Korat Cat",
+        "image": "Korat Cat.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Singapura Cat",
+        "image": "Singapura Cat.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Tamil Nadu Native Stray Cats",
+        "image": "Tamil Nadu Native Stray Cats.jpeg"
+      },
+      {
+        "animal": "Cat",
+        "name": "Pondicherry Cats",
+        "image": "Pondicherry Cats.jpeg"
+      }
+    ],
+    "Cow": [
+      {
+        "animal": "Cow",
+        "name": "Gir Cow",
+        "image": "Gir Cow.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Sahiwal Cow",
+        "image": "Sahiwal Cow.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Red Sindhi",
+        "image": "Red Sindhi.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Tharparkar",
+        "image": "Tharparkar.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Ongole",
+        "image": "Ongole.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Kangeyam",
+        "image": "Kangeyam.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Pulikulam",
+        "image": "Pulikulam.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Bargur",
+        "image": "Bargur.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Umblachery",
+        "image": "Umblachery.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Hallikar",
+        "image": "Hallikar.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Krishna Valley Cow",
+        "image": "Krishna Valley Cow.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Deoni",
+        "image": "Deoni.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Kankrej",
+        "image": "Kankrej.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Hariana",
+        "image": "Hariana.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Rathi",
+        "image": "Rathi.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Vechur",
+        "image": "Vechur.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Malnad Gidda",
+        "image": "Malnad Gidda.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Alambadi",
+        "image": "Alambadi.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Amrit Mahal",
+        "image": "Amrit Mahal.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Punganur",
+        "image": "Punganur.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Jersey",
+        "image": "Jersey.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Holstein Friesian",
+        "image": "Holstein Friesian.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Brown Swiss",
+        "image": "Brown Swiss.jpeg"
+      },
+      {
+        "animal": "Cow",
+        "name": "Murrah Buffalo",
+        "image": "Murrah Buffalo.jpeg"
+      }
+    ],
+    "Goat": [
+      {
+        "animal": "Goat",
+        "name": "Boer Goat",
+        "image": "Boer Goat.jpeg"
+      },
+      {
+        "animal": "Goat",
+        "name": "Barbari Goat",
+        "image": "Barbari Goat.jpeg"
+      },
+      {
+        "animal": "Goat",
+        "name": "Black Bengal Goat",
+        "image": "Black Bengal Goat.jpeg"
+      },
+      {
+        "animal": "Goat",
+        "name": "Jamunapari Goat",
+        "image": "Jamunapari Goat.jpeg"
+      },
+      {
+        "animal": "Goat",
+        "name": "Sirohi Goat",
+        "image": "Sirohi Goat.jpeg"
+      },
+      {
+        "animal": "Goat",
+        "name": "Beetal Goat",
+        "image": "Beetal Goat.jpeg"
+      },
+      {
+        "animal": "Goat",
+        "name": "Osmanabadi Goat",
+        "image": "Osmanabadi Goat.jpeg"
+      },
+      {
+        "animal": "Goat",
+        "name": "Jakhrana Goat",
+        "image": "Jakhrana Goat.jpeg"
+      },
+      {
+        "animal": "Goat",
+        "name": "Malabari Goat",
+        "image": "Malabari Goat.jpeg"
+      },
+      {
+        "animal": "Goat",
+        "name": "Kanni Adu",
+        "image": "Kanni Adu.jpeg"
+      },
+      {
+        "animal": "Goat",
+        "name": "Kodi Adu",
+        "image": "Kodi Adu.jpeg"
+      },
+      {
+        "animal": "Goat",
+        "name": "Salem Black Goat",
+        "image": "Salem Black Goat.jpeg"
+      },
+      {
+        "animal": "Goat",
+        "name": "Thalachery Goat",
+        "image": "Thalachery Goat.jpeg"
+      },
+      {
+        "animal": "Goat",
+        "name": "Mecheri Goat",
+        "image": "Mecheri Goat.jpeg"
+      }
+    ],
+    "Horse": [
+      {
+        "animal": "Horse",
+        "name": "American Quarter Horse",
+        "image": "American Quarter Horse.jpeg"
+      },
+      {
+        "animal": "Horse",
+        "name": "Arabian Horse",
+        "image": "Arabian Horse.jpeg"
+      },
+      {
+        "animal": "Horse",
+        "name": "Thoroughbred",
+        "image": "Thoroughbred.jpeg"
+      },
+      {
+        "animal": "Horse",
+        "name": "Paint Horse",
+        "image": "Paint Horse.jpeg"
+      },
+      {
+        "animal": "Horse",
+        "name": "Appaloosa",
+        "image": "Appaloosa.jpeg"
+      },
+      {
+        "animal": "Horse",
+        "name": "Morgan Horse",
+        "image": "Morgan Horse.jpeg"
+      },
+      {
+        "animal": "Horse",
+        "name": "Tennessee Walking Horse",
+        "image": "Tennessee Walking Horse.jpeg"
+      },
+      {
+        "animal": "Horse",
+        "name": "Shetland Pony",
+        "image": "Shetland Pony.jpeg"
+      },
+      {
+        "animal": "Horse",
+        "name": "Welsh Pony",
+        "image": "Welsh Pony.jpeg"
+      },
+      {
+        "animal": "Horse",
+        "name": "Miniature Horse",
+        "image": "Miniature Horse.jpeg"
+      }
+    ],
+    "Sheep": [
+      {
+        "animal": "Sheep",
+        "name": "Nellore Sheep",
+        "image": "Nellore Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Deccani Sheep",
+        "image": "Deccani Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Gaddi Sheep",
+        "image": "Gaddi Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Chokla Sheep",
+        "image": "Chokla Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Rampur Bushair Sheep",
+        "image": "Rampur Bushair Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Magra Sheep",
+        "image": "Magra Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Garole Sheep",
+        "image": "Garole Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Muzaffarnagari Sheep",
+        "image": "Muzaffarnagari Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Patanwadi Sheep",
+        "image": "Patanwadi Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Jaisalmeri Sheep",
+        "image": "Jaisalmeri Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Madras Red Sheep",
+        "image": "Madras Red Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Mecheri Sheep",
+        "image": "Mecheri Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Vembur Sheep",
+        "image": "Vembur Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Kilakarsal Sheep",
+        "image": "Kilakarsal Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Ramnad White Sheep",
+        "image": "Ramnad White Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Kenguri Sheep",
+        "image": "Kenguri Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Trichy Black Sheep",
+        "image": "Trichy Black Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Coimbatore Sheep",
+        "image": "Coimbatore Sheep.jpeg"
+      },
+      {
+        "animal": "Sheep",
+        "name": "Salem Sheep",
+        "image": "Salem Sheep.jpeg"
+      }
+    ],
+    "Rabbit": [
+      {
+        "animal": "Rabbit",
+        "name": "Indian Rabbit",
+        "image": "Indian Rabbit.jpeg"
+      },
+      {
+        "animal": "Rabbit",
+        "name": "Angora Rabbit",
+        "image": "Angora Rabbit.jpeg"
+      },
+      {
+        "animal": "Rabbit",
+        "name": "White Rabbit",
+        "image": "White Rabbit.jpeg"
+      },
+      {
+        "animal": "Rabbit",
+        "name": "Grey Giant Rabbit",
+        "image": "Grey Giant Rabbit.jpeg"
+      },
+      {
+        "animal": "Rabbit",
+        "name": "Flemish Giant Rabbit",
+        "image": "Flemish Giant Rabbit.jpeg"
+      },
+      {
+        "animal": "Rabbit",
+        "name": "Dutch Rabbit",
+        "image": "Dutch Rabbit.jpeg"
+      },
+      {
+        "animal": "Rabbit",
+        "name": "Himalayan Rabbit",
+        "image": "Himalayan Rabbit.jpeg"
+      },
+      {
+        "animal": "Rabbit",
+        "name": "Rex Rabbit",
+        "image": "Rex Rabbit.jpeg"
+      },
+      {
+        "animal": "Rabbit",
+        "name": "Lionhead Rabbit",
+        "image": "Lionhead Rabbit.jpeg"
+      },
+      {
+        "animal": "Rabbit",
+        "name": "Soviet Chinchilla Rabbit",
+        "image": "Soviet Chinchilla Rabbit.jpeg"
+      },
+      {
+        "animal": "Rabbit",
+        "name": "Black Rabbit",
+        "image": "Black Rabbit.jpeg"
+      },
+      {
+        "animal": "Rabbit",
+        "name": "Coimbatore White Rabbit",
+        "image": "Coimbatore White Rabbit.jpeg"
+      },
+      {
+        "animal": "Rabbit",
+        "name": "Salem Black Rabbit",
+        "image": "Salem Black Rabbit.jpeg"
+      },
+      {
+        "animal": "Rabbit",
+        "name": "Village Desi Rabbit",
+        "image": "Village Desi Rabbit.jpeg"
+      }
+    ],
+    "Pigeon": [
+      {
+        "animal": "Pigeon",
+        "name": "Desi Pigeon",
+        "image": "Desi Pigeon.jpeg"
+      },
+      {
+        "animal": "Pigeon",
+        "name": "King Pigeon",
+        "image": "King Pigeon.jpeg"
+      },
+      {
+        "animal": "Pigeon",
+        "name": "Fantail Pigeon",
+        "image": "Fantail Pigeon.jpeg"
+      },
+      {
+        "animal": "Pigeon",
+        "name": "Jacobin Pigeon",
+        "image": "Jacobin Pigeon.jpeg"
+      },
+      {
+        "animal": "Pigeon",
+        "name": "Homer Pigeon",
+        "image": "Homer Pigeon.jpeg"
+      },
+      {
+        "animal": "Pigeon",
+        "name": "Modena Pigeon",
+        "image": "Modena Pigeon.jpeg"
+      },
+      {
+        "animal": "Pigeon",
+        "name": "Indian Highflyer Pigeon",
+        "image": "Indian Highflyer Pigeon.jpeg"
+      },
+      {
+        "animal": "Pigeon",
+        "name": "Lahore Pigeon",
+        "image": "Lahore Pigeon.jpeg"
+      },
+      {
+        "animal": "Pigeon",
+        "name": "Shirazi Pigeon",
+        "image": "Shirazi Pigeon.jpeg"
+      },
+      {
+        "animal": "Pigeon",
+        "name": "Tamil Nadu Native Pigeons",
+        "image": "Tamil Nadu Native Pigeons.jpeg"
+      },
+      {
+        "animal": "Pigeon",
+        "name": "Pondicherry Coastal Pigeons",
+        "image": "Pondicherry Coastal Pigeons.jpeg"
+      }
+    ],
+    "Ox": [
+      {
+        "animal": "Ox",
+        "name": "Kangeyam Ox",
+        "image": "Kangeyam Ox.jpeg"
+      },
+      {
+        "animal": "Ox",
+        "name": "Pulikulam Ox",
+        "image": "Pulikulam Ox.jpeg"
+      },
+      {
+        "animal": "Ox",
+        "name": "Bargur Ox",
+        "image": "Bargur Ox.jpeg"
+      },
+      {
+        "animal": "Ox",
+        "name": "Umblachery Ox",
+        "image": "Umblachery Ox.jpeg"
+      },
+      {
+        "animal": "Ox",
+        "name": "Alambadi Ox",
+        "image": "Alambadi Ox.jpeg"
+      },
+      {
+        "animal": "Ox",
+        "name": "Hallikar Ox",
+        "image": "Hallikar Ox.jpeg"
+      },
+      {
+        "animal": "Ox",
+        "name": "Amrit Mahal Ox",
+        "image": "Amrit Mahal Ox.jpeg"
+      },
+      {
+        "animal": "Ox",
+        "name": "Ongole Ox",
+        "image": "Ongole Ox.jpeg"
+      },
+      {
+        "animal": "Ox",
+        "name": "Krishna Valley Ox",
+        "image": "Krishna Valley Ox.jpeg"
+      },
+      {
+        "animal": "Ox",
+        "name": "Vechur Ox",
+        "image": "Vechur Ox.jpeg"
+      }
+    ],
+    "Lovebirds": [
+      {
+        "animal": "Lovebirds",
+        "name": "Peach-faced Lovebird",
+        "image": "Peach-faced Lovebird.jpeg"
+      },
+      {
+        "animal": "Lovebirds",
+        "name": "Fischer’s Lovebird",
+        "image": "Fischer’s Lovebird.jpeg"
+      },
+      {
+        "animal": "Lovebirds",
+        "name": "Masked Lovebird",
+        "image": "Masked Lovebird.jpeg"
+      },
+      {
+        "animal": "Lovebirds",
+        "name": "Lutino Lovebird",
+        "image": "Lutino Lovebird.jpeg"
+      },
+      {
+        "animal": "Lovebirds",
+        "name": "Albino Lovebird",
+        "image": "Albino Lovebird.jpeg"
+      },
+      {
+        "animal": "Lovebirds",
+        "name": "Black-cheeked Lovebird",
+        "image": "Black-cheeked Lovebird.jpeg"
+      },
+      {
+        "animal": "Lovebirds",
+        "name": "Indian Desi Lovebirds",
+        "image": "Indian Desi Lovebirds.jpeg"
+      },
+      {
+        "animal": "Lovebirds",
+        "name": "Rose-faced Lovebird",
+        "image": "Rose-faced Lovebird.jpeg"
+      }
+    ],
+    "Rooster": [
+      {
+        "animal": "Rooster",
+        "name": "Aseel Rooster",
+        "image": "Aseel Rooster.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "Kadaknath Rooster",
+        "image": "Kadaknath Rooster.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "Giriraja Rooster",
+        "image": "Giriraja Rooster.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "Vanaraja Rooster",
+        "image": "Vanaraja Rooster.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "Desi Village Rooster",
+        "image": "Desi Village Rooster.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "Kuroiler Rooster",
+        "image": "Kuroiler Rooster.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "Rhode Island Red Rooster",
+        "image": "Rhode Island Red Rooster.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "White Leghorn Rooster",
+        "image": "White Leghorn Rooster.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "Cochin Rooster",
+        "image": "Cochin Rooster.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "Bantam Rooster",
+        "image": "Bantam Rooster.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "Turkey Cock",
+        "image": "Turkey Cock.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "Madurai Aseel Rooster",
+        "image": "Madurai Aseel Rooster.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "Kilakarsal Aseel Rooster",
+        "image": "Kilakarsal Aseel Rooster.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "Kodi Aseel Rooster",
+        "image": "Kodi Aseel Rooster.jpeg"
+      },
+      {
+        "animal": "Rooster",
+        "name": "Salem Rooster",
+        "image": "Salem Rooster.jpeg"
+      }
+    ]
+  }
+}

@@ -16,6 +16,19 @@ export function DashboardPage() {
     refresh();
   }, [refresh]);
 
+  useEffect(() => {
+    const selectedProfile = localStorage.getItem("pawmedic-selected-profile");
+    if (!selectedProfile) return;
+    try {
+      const parsed = JSON.parse(selectedProfile) as { animal?: string; breed?: string };
+      setPetForm((current) => ({
+        ...current,
+        species: current.species === "Dog" && parsed.animal ? parsed.animal : current.species || parsed.animal || "Dog",
+        breed: current.breed || parsed.breed || "",
+      }));
+    } catch {}
+  }, []);
+
   const selectedPet = useMemo(() => pets.find((pet) => pet.id === selectedPetId) ?? null, [pets, selectedPetId]);
   const selectedWeights = useMemo(() => dashboard?.weight_logs.filter((item) => item.pet_id === selectedPetId) ?? [], [dashboard, selectedPetId]);
 

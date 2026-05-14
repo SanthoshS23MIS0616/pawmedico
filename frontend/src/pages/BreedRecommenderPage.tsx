@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { ResultCard } from "../components/ResultCard";
 import { api } from "../services/api";
 
 const defaultForm = {
@@ -41,15 +43,46 @@ export function BreedRecommenderPage() {
   const traits = Object.entries(form);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-      <section className="panel p-8">
-        <h1 className="text-3xl font-black">Breed recommender</h1>
-        <p className="mt-3 text-sm text-ink/65">Adjust lifestyle and care preferences to get the closest dog breed matches.</p>
+    <div className="space-y-6">
+      <section className="panel overflow-hidden p-8 lg:p-10">
+        <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+          <div>
+            <p className="inline-flex rounded-full bg-coral/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.24em] text-coral">Breed match workflow</p>
+            <h1 className="mt-5 text-4xl font-black leading-tight">Find a dog breed that actually fits lifestyle, grooming effort, family needs, and energy expectations.</h1>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-ink/70 dark:text-paper/70">
+              This is now a first-class module in PawMedic Pro. Use it as a preference-based match flow, then jump into the visual animal gallery if you want curated breed browsing.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link className="button-secondary" to="/animal-gallery">
+                Open animal gallery
+              </Link>
+              <Link className="button-secondary" to="/breed-finder">
+                Use AI breed finder
+              </Link>
+            </div>
+          </div>
+          <div className="rounded-[30px] bg-ink p-6 text-white">
+            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-gold">Current source</p>
+            <div className="mt-6 grid gap-3">
+              {["Lifestyle sliders", "Temperament weighting", "Care and grooming profile", "Curated fallback breed profiles"].map((item) => (
+                <div key={item} className="rounded-2xl bg-white/10 px-4 py-3 text-sm">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+        <section className="panel p-8">
+          <h2 className="text-3xl font-black">Breed recommender</h2>
+          <p className="mt-3 text-sm text-ink/65 dark:text-paper/70">Adjust lifestyle and care preferences to get the closest dog breed matches.</p>
         <div className="mt-6 space-y-4">
           {traits.map(([key, value]) => (
             <div key={key}>
               <div className="mb-2 flex justify-between text-sm font-semibold">
-                <span>{key.replaceAll("_", " ")}</span>
+                <span>{key.split("_").join(" ")}</span>
                 <span>{value}</span>
               </div>
               <input
@@ -67,25 +100,25 @@ export function BreedRecommenderPage() {
         <button className="button-primary mt-6" onClick={submit}>
           Find best breeds
         </button>
-      </section>
+        </section>
 
-      <section className="panel p-8">
-        <h2 className="text-2xl font-black">Matches</h2>
-        {loading ? <div className="mt-5"><LoadingSpinner label="Scoring breed profiles..." /></div> : null}
-        <div className="mt-5 space-y-4">
-          {result?.matches?.map((match: any) => (
-            <a key={match.name} className="block rounded-[24px] bg-sand p-5 transition hover:-translate-y-0.5" href={match.url} target="_blank" rel="noreferrer">
-              <div className="flex items-center justify-between">
-                <p className="text-lg font-black">{match.name}</p>
-                <span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-coral">{match.similarity}%</span>
-              </div>
-              <p className="mt-3 text-sm text-ink/70">{match.summary}</p>
-            </a>
-          ))}
-          {!result ? <p className="text-sm text-ink/60">Top breed matches will appear here.</p> : null}
-          {result?.warning ? <p className="text-sm font-semibold text-amber-700">{result.warning}</p> : null}
-        </div>
-      </section>
+        <ResultCard title="Matches" subtitle="Top-scoring breeds, quick summaries, and direct breed reference links." badge={result?.matches?.length ? `${result.matches.length}` : undefined}>
+          {loading ? <div className="mt-5"><LoadingSpinner label="Scoring breed profiles..." /></div> : null}
+          <div className="space-y-4">
+            {result?.matches?.map((match: any) => (
+              <a key={match.name} className="block rounded-[24px] bg-sand p-5 transition hover:-translate-y-0.5 dark:bg-white/5" href={match.url} target="_blank" rel="noreferrer">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-lg font-black">{match.name}</p>
+                  <span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-coral">{match.similarity}%</span>
+                </div>
+                <p className="mt-3 text-sm text-ink/70 dark:text-paper/70">{match.summary}</p>
+              </a>
+            ))}
+            {!result ? <p className="text-sm text-ink/60 dark:text-paper/60">Top breed matches will appear here.</p> : null}
+            {result?.warning ? <p className="text-sm font-semibold text-amber-700">{result.warning}</p> : null}
+          </div>
+        </ResultCard>
+      </div>
     </div>
   );
 }

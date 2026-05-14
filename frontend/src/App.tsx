@@ -2,8 +2,10 @@ import { NavLink, Route, Routes } from "react-router-dom";
 
 import { useAppPreferences } from "./hooks/useAppPreferences";
 import { Navbar } from "./components/Navbar";
+import { AnimalSelectPage } from "./pages/AnimalSelectPage";
 import { BreedFinderPage } from "./pages/BreedFinderPage";
 import { BreedRecommenderPage } from "./pages/BreedRecommenderPage";
+import { BreedSelectPage } from "./pages/BreedSelectPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
@@ -24,6 +26,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage language={preferences.language} />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/animal-gallery" element={<AnimalSelectPage />} />
+          <Route path="/breed-gallery/:animal" element={<BreedSelectPage />} />
           <Route path="/skin-disease" element={<SkinDiseasePage />} />
           <Route path="/breed-finder" element={<BreedFinderPage />} />
           <Route path="/symptom-checker" element={<SymptomCheckerPage />} />

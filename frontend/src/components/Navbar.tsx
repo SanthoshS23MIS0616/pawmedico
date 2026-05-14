@@ -6,8 +6,10 @@ import { AppLanguage, AppTheme, languageLabels, t } from "../utils/translations"
 const links = [
   { to: "/", label: "Home" },
   { to: "/dashboard", label: "Dashboard" },
+  { to: "/animal-gallery", label: "Animal Gallery" },
   { to: "/skin-disease", label: "Skin AI" },
   { to: "/breed-finder", label: "Breed Finder" },
+  { to: "/breed-recommender", label: "Breed Match" },
   { to: "/symptom-checker", label: "Symptoms" },
   { to: "/prescription", label: "Prescription" },
   { to: "/pawbot", label: "PawBot" }

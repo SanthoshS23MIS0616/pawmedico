@@ -1,16 +1,29 @@
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { api } from "../services/api";
 import { severityTone } from "../utils/diseaseHelpers";
 
 export function SymptomCheckerPage() {
+  const [searchParams] = useSearchParams();
   const [catalog, setCatalog] = useState<{ breed?: string | null; symptoms: string[]; all_breeds: string[] }>({ symptoms: [], all_breeds: [] });
-  const [breed, setBreed] = useState("");
+  const [breed, setBreed] = useState(searchParams.get("breed") ?? "");
+  const [animal, setAnimal] = useState(searchParams.get("animal") ?? "Dog");
   const [selected, setSelected] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any | null>(null);
+
+  useEffect(() => {
+    const profile = localStorage.getItem("pawmedic-selected-profile");
+    if (!profile) return;
+    try {
+      const parsed = JSON.parse(profile) as { animal?: string; breed?: string };
+      if (!searchParams.get("breed") && parsed.breed) setBreed(parsed.breed);
+      if (!searchParams.get("animal") && parsed.animal) setAnimal(parsed.animal);
+    } catch {}
+  }, [searchParams]);
 
   useEffect(() => {
     api.getSymptomCatalog(breed || undefined).then(setCatalog);
@@ -30,7 +43,7 @@ export function SymptomCheckerPage() {
     setLoading(true);
     setResult(null);
     try {
-      setResult(await api.predictSymptoms({ animal: "Dog", breed: breed || null, symptoms: selected }));
+      setResult(await api.predictSymptoms({ animal, breed: breed || null, symptoms: selected }));
     } finally {
       setLoading(false);
     }
@@ -39,7 +52,17 @@ export function SymptomCheckerPage() {
   return (
     <div className="space-y-6">
       <section className="panel p-8">
+        <div className="mb-5 rounded-[24px] bg-sand p-4 text-sm dark:bg-white/5">
+          <p className="font-bold">Selected profile</p>
+          <p className="mt-2 text-ink/70 dark:text-paper/70">
+            Animal: {animal || "Not selected"} | Breed: {breed || "All breeds"}
+          </p>
+        </div>
         <div className="grid gap-4 lg:grid-cols-[0.4fr_0.6fr]">
+          <div>
+            <label className="label">Animal</label>
+            <input className="input" value={animal} onChange={(event) => setAnimal(event.target.value)} />
+          </div>
           <div>
             <label className="label">Breed</label>
             <select className="input" value={breed} onChange={(event) => setBreed(event.target.value)}>

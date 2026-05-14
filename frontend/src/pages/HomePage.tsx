@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { AppLanguage, t } from "../utils/translations";
 
 const cards = [
+  { title: "Animal Gallery", body: "Choose an animal visually, open its curated breed gallery, and jump straight into symptom analysis.", to: "/animal-gallery" },
   { title: "Skin Disease AI", body: "Upload a pet skin image for a severity estimate, care tips, and a vet warning signal.", to: "/skin-disease" },
   { title: "Breed Finder", body: "Detect animal and breed from an image using Gemini or the local TensorFlow fallback.", to: "/breed-finder" },
+  { title: "Breed Match", body: "Use the preference-driven recommender to find the best dog breeds for lifestyle, care, and temperament.", to: "/breed-recommender" },
   { title: "Symptom Checker", body: "Select symptoms and get a disease prediction with urgency guidance and reference links.", to: "/symptom-checker" },
   { title: "Prescription PDF", body: "Generate structured medication and diet plans with a downloadable PDF handout.", to: "/prescription" },
   { title: "Nearby Vets", body: "Find local veterinary clinics with OpenStreetMap-powered lookup and direct map links.", to: "/nearby-vets" },

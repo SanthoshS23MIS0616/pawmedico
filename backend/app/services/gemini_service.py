@@ -1,5 +1,6 @@
 import asyncio
 import json
+import re
 from typing import AsyncIterator
 
 from app.core.config import settings
@@ -21,12 +22,31 @@ class GeminiService:
     def configured(self) -> bool:
         return self._configured
 
+    @property
+    def model_name(self) -> str:
+        return settings.gemini_model
+
+    def _extract_confidence(self, text: str) -> float | None:
+        match = re.search(r"(\d{1,3})(?:\s?%)", text)
+        if not match:
+            return None
+        confidence = float(match.group(1))
+        return max(0.0, min(confidence, 100.0))
+
+    def evaluate_confidence(self, text: str, fallback: float = 65.0) -> tuple[float, str, str | None]:
+        confidence = self._extract_confidence(text) or fallback
+        if confidence < settings.gemini_confidence_threshold:
+            return confidence, "low", "Low-confidence AI result. Please see a vet for a proper diagnosis."
+        if confidence < 80:
+            return confidence, "medium", None
+        return confidence, "high", None
+
     async def analyze_image(self, image_bytes: bytes, mime_type: str, prompt: str) -> str | None:
         if not self.configured:
             return None
 
         def _run() -> str:
-            model = genai.GenerativeModel("gemini-1.5-flash")
+            model = genai.GenerativeModel(self.model_name)
             response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_bytes}])
             return getattr(response, "text", "").strip()
 
@@ -37,7 +57,7 @@ class GeminiService:
             return None
 
         def _run() -> dict | None:
-            model = genai.GenerativeModel("gemini-1.5-flash")
+            model = genai.GenerativeModel(self.model_name)
             response = model.generate_content(prompt)
             text = getattr(response, "text", "").strip()
             try:
@@ -56,7 +76,7 @@ class GeminiService:
             return None
 
         def _run() -> str:
-            model = genai.GenerativeModel("gemini-1.5-flash")
+            model = genai.GenerativeModel(self.model_name)
             response = model.generate_content(prompt)
             return getattr(response, "text", "").strip()
 
@@ -70,7 +90,7 @@ class GeminiService:
             return
 
         def _collect() -> list[str]:
-            model = genai.GenerativeModel("gemini-1.5-flash")
+            model = genai.GenerativeModel(self.model_name)
             response = model.generate_content(prompt, stream=True)
             return [chunk.text for chunk in response if getattr(chunk, "text", "")]
 
@@ -80,4 +100,3 @@ class GeminiService:
 
 
 gemini_service = GeminiService()
-

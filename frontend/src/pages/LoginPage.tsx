@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { api } from "../services/api";
+import { AppLanguage, t } from "../utils/translations";
 
-export function LoginPage() {
+export function LoginPage({ language }: { language: AppLanguage }) {
+  const copy = t(language);
   const [status, setStatus] = useState<{ configured: boolean; google_login_ready: boolean; demo_mode_available: boolean } | null>(null);
   const [demoName, setDemoName] = useState("");
   const [demoEmail, setDemoEmail] = useState("");
@@ -17,15 +19,15 @@ export function LoginPage() {
     <div className="grid gap-6 lg:grid-cols-2">
       <section className="panel p-8">
         <p className="text-sm font-bold uppercase tracking-[0.25em] text-coral">Authentication</p>
-        <h1 className="mt-3 text-3xl font-black">Supabase auth readiness</h1>
+        <h1 className="mt-3 text-3xl font-black">{copy.loginTitle}</h1>
         {!status ? <div className="mt-6"><LoadingSpinner label="Checking backend auth configuration..." /></div> : null}
         {status ? (
-          <div className="mt-6 space-y-4 text-sm text-ink/75">
+          <div className="mt-6 space-y-4 text-sm text-ink/75 dark:text-paper/75">
             <div className="rounded-2xl bg-sand p-4">
               <p className="font-bold">Supabase configured: {status.configured ? "Yes" : "No"}</p>
               <p className="mt-2">Google login ready: {status.google_login_ready ? "Yes" : "No"}</p>
             </div>
-            <p>Add your real `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` to enable production login flows.</p>
+            <p>{copy.loginBody}</p>
           </div>
         ) : null}
       </section>

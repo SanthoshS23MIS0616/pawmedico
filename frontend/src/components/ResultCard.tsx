@@ -1,8 +1,10 @@
+import type { ReactNode } from "react";
+
 type ResultCardProps = {
   title: string;
   subtitle?: string;
   badge?: string;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export function ResultCard({ title, subtitle, badge, children }: ResultCardProps) {

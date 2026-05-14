@@ -64,22 +64,25 @@ class ImageService:
     async def detect_skin_condition(self, image_bytes: bytes, mime_type: str) -> dict:
         prompt = (
             "You are a veterinary skin disease expert. Analyze this pet skin image and return a short diagnosis, "
-            "severity (low/moderate/high), confidence percentage, 3 care tips, and whether a vet visit is needed."
+            "severity (low/moderate/high), confidence percentage, 3 care tips, and whether a vet visit is needed. "
+            "Always include a confidence percentage in the answer."
         )
         gemini_text = await gemini_service.analyze_image(image_bytes, mime_type, prompt)
         fallback_condition, fallback_confidence, report = await asyncio.to_thread(self._basic_skin_report, image_bytes)
         if gemini_text:
             lower_text = gemini_text.lower()
             severity = "high" if "high" in lower_text or "urgent" in lower_text else "moderate" if "moderate" in lower_text else "low"
-            needs_vet = "yes" in lower_text or "vet" in lower_text or severity == "high"
+            confidence, confidence_label, warning = gemini_service.evaluate_confidence(gemini_text, fallback=84.0)
+            needs_vet = "yes" in lower_text or "vet" in lower_text or severity == "high" or confidence_label == "low"
             return {
                 "condition": gemini_text.splitlines()[0][:120],
-                "confidence": 84.0,
+                "confidence": confidence,
                 "severity": severity,
                 "care_tips": ["Keep the area clean and dry.", "Prevent scratching or licking.", "Monitor spreading or discharge."],
                 "needs_vet": needs_vet,
                 "analysis_source": "gemini",
-                "warning": None,
+                "confidence_label": confidence_label,
+                "warning": warning,
                 "image_report": report,
             }
         severity = "high" if fallback_confidence >= 80 else "moderate" if fallback_confidence >= 65 else "low"
@@ -90,6 +93,7 @@ class ImageService:
             "care_tips": ["Clean the affected skin gently.", "Avoid harsh shampoos until reviewed.", "See a vet if swelling, odor, or pain appears."],
             "needs_vet": severity != "low",
             "analysis_source": "opencv-fallback",
+            "confidence_label": "low" if fallback_confidence < settings.gemini_confidence_threshold else "medium",
             "warning": "Gemini key not configured; showing fallback image analysis." if not gemini_service.configured else None,
             "image_report": report,
         }
@@ -118,14 +122,16 @@ class ImageService:
                     animal = value
                 if key.lower().startswith("breed"):
                     breed = value
+            confidence, confidence_label, warning = gemini_service.evaluate_confidence(gemini_text, fallback=86.0)
             return {
                 "animal": animal,
                 "breed": breed,
-                "confidence": 86.0,
+                "confidence": confidence,
                 "description": "Detected with Gemini vision.",
                 "analysis_source": "gemini",
+                "confidence_label": confidence_label,
                 "info_link": f"https://www.google.com/search?q={breed.replace(' ', '+')}+breed" if breed != "Unknown" else None,
-                "warning": None,
+                "warning": warning,
             }
 
         breed_result = await asyncio.to_thread(self._predict_breed_with_model, image_bytes)
@@ -137,6 +143,7 @@ class ImageService:
                 "confidence": round(confidence, 2),
                 "description": "Predicted with the bundled TensorFlow breed classifier.",
                 "analysis_source": "tensorflow",
+                "confidence_label": "medium" if confidence >= settings.gemini_confidence_threshold else "low",
                 "info_link": f"https://www.akc.org/dog-breeds/{breed.lower().replace(' ', '-')}/",
                 "warning": "Gemini key not configured; using the local dog-only classifier.",
             }
@@ -147,10 +154,10 @@ class ImageService:
             "confidence": 32.0,
             "description": "No configured AI model was available for image identification.",
             "analysis_source": "fallback",
+            "confidence_label": "low",
             "info_link": None,
             "warning": "Add GEMINI_API_KEY to enable full animal and breed recognition.",
         }
 
 
 image_service = ImageService()
-

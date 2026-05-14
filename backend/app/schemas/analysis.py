@@ -10,6 +10,7 @@ class SkinDiseaseResponse(BaseModel):
     care_tips: list[str]
     needs_vet: bool
     analysis_source: str
+    confidence_label: Literal["low", "medium", "high"] = "medium"
     warning: str | None = None
     image_report: str | None = None
 
@@ -20,6 +21,7 @@ class BreedIdentificationResponse(BaseModel):
     confidence: float = Field(ge=0, le=100)
     description: str
     analysis_source: str
+    confidence_label: Literal["low", "medium", "high"] = "medium"
     info_link: str | None = None
     warning: str | None = None
 
@@ -152,4 +154,3 @@ class NearbyVet(BaseModel):
 class NearbyVetsResponse(BaseModel):
     vets: list[NearbyVet]
     warning: str | None = None
-

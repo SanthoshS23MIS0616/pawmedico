@@ -32,6 +32,10 @@ export const translations = {
     vaccinationsBody: "Plan preventive care, upcoming doses, and clinic visits from a single reminder hub.",
     nearbyTitle: "Nearby veterinary clinics",
     nearbyBody: "Use GPS or coordinates to find nearby clinics with OpenStreetMap-powered lookup.",
+    nearbySearch: "Search clinics",
+    nearbyCurrent: "Use current location",
+    vaccinesEmpty: "No vaccinations scheduled yet.",
+    appointmentsEmpty: "No appointment requests yet.",
     themeLight: "Light",
     themeDark: "Dark"
   },
@@ -59,6 +63,10 @@ export const translations = {
     vaccinationsBody: "தடுப்பு பராமரிப்பு, அடுத்த டோஸ், மற்றும் கிளினிக் வருகைகளை ஒரே நினைவூட்டல் மையத்தில் நிர்வகிக்கவும்.",
     nearbyTitle: "அருகிலுள்ள விலங்கு மருத்துவ நிலையங்கள்",
     nearbyBody: "GPS அல்லது கோஆர்டினேட் மூலம் அருகிலுள்ள கிளினிக்குகளை கண்டுபிடிக்கவும்.",
+    nearbySearch: "கிளினிக்குகள் தேடு",
+    nearbyCurrent: "தற்போதைய இடம்",
+    vaccinesEmpty: "இன்னும் தடுப்பூசி பதிவுகள் இல்லை.",
+    appointmentsEmpty: "இன்னும் சந்திப்பு கோரிக்கைகள் இல்லை.",
     themeLight: "ஒளி",
     themeDark: "இருள்"
   },
@@ -86,6 +94,10 @@ export const translations = {
     vaccinationsBody: "प्रिवेंटिव केयर, अगली डोज और क्लिनिक विजिट एक ही reminder hub से प्लान करें।",
     nearbyTitle: "नज़दीकी veterinary clinics",
     nearbyBody: "GPS या coordinates से आसपास के clinics खोजें।",
+    nearbySearch: "क्लिनिक खोजें",
+    nearbyCurrent: "वर्तमान लोकेशन",
+    vaccinesEmpty: "अभी कोई vaccine schedule नहीं है।",
+    appointmentsEmpty: "अभी कोई appointment request नहीं है।",
     themeLight: "लाइट",
     themeDark: "डार्क"
   }

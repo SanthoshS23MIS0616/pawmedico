@@ -1,11 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: "class",
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
         ink: "#14213d",
         sand: "#f6f2e8",
+        paper: "#f7f3ea",
         coral: "#ea6a47",
         mint: "#7bc6a4",
         gold: "#f2b138"

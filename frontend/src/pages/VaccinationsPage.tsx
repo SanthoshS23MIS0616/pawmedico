@@ -1,9 +1,12 @@
 import { FormEvent, useEffect, useState } from "react";
 
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { ResultCard } from "../components/ResultCard";
 import { api, Appointment, Pet, Vaccination } from "../services/api";
+import { AppLanguage, t } from "../utils/translations";
 
-export function VaccinationsPage() {
+export function VaccinationsPage({ language }: { language: AppLanguage }) {
+  const copy = t(language);
   const [pets, setPets] = useState<Pet[]>([]);
   const [vaccinations, setVaccinations] = useState<Vaccination[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -41,9 +44,15 @@ export function VaccinationsPage() {
   return (
     <div className="space-y-6">
       {loading ? <LoadingSpinner label="Loading reminders and appointments..." /> : null}
+
+      <section className="panel p-8">
+        <h1 className="text-3xl font-black">{copy.vaccinationsTitle}</h1>
+        <p className="mt-3 text-sm text-ink/70 dark:text-paper/70">{copy.vaccinationsBody}</p>
+      </section>
+
       <section className="grid gap-6 lg:grid-cols-2">
         <form className="panel p-8" onSubmit={submitVaccination}>
-          <h1 className="text-2xl font-black">Vaccination reminders</h1>
+          <h2 className="text-2xl font-black">Vaccination reminders</h2>
           <div className="mt-6 space-y-4">
             <select className="input" value={vaccineForm.pet_id} onChange={(event) => setVaccineForm((value) => ({ ...value, pet_id: event.target.value }))} required>
               <option value="">Choose pet</option>
@@ -84,18 +93,33 @@ export function VaccinationsPage() {
       </section>
 
       <section className="grid gap-6 lg:grid-cols-2">
-        <div className="panel p-8">
-          <h3 className="text-xl font-black">Upcoming vaccinations</h3>
-          <div className="mt-5 space-y-3">
-            {vaccinations.length ? vaccinations.map((item) => <div key={item.id} className="rounded-2xl bg-sand p-4 text-sm">{item.vaccine_name} • Due {item.next_due_date}</div>) : <p className="text-sm text-ink/60">No vaccinations scheduled yet.</p>}
+        <ResultCard title="Upcoming vaccinations" badge={`${vaccinations.length}`}>
+          <div className="space-y-3">
+            {vaccinations.length ? (
+              vaccinations.map((item) => (
+                <div key={item.id} className="rounded-2xl bg-sand p-4 text-sm dark:bg-white/5">
+                  {item.vaccine_name} - Due {item.next_due_date}
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-ink/60 dark:text-paper/60">{copy.vaccinesEmpty}</p>
+            )}
           </div>
-        </div>
-        <div className="panel p-8">
-          <h3 className="text-xl font-black">Appointment queue</h3>
-          <div className="mt-5 space-y-3">
-            {appointments.length ? appointments.map((item) => <div key={item.id} className="rounded-2xl bg-sand p-4 text-sm">{item.vet_name} • {item.vet_location} • {item.date}</div>) : <p className="text-sm text-ink/60">No appointment requests yet.</p>}
+        </ResultCard>
+
+        <ResultCard title="Appointment queue" badge={`${appointments.length}`}>
+          <div className="space-y-3">
+            {appointments.length ? (
+              appointments.map((item) => (
+                <div key={item.id} className="rounded-2xl bg-sand p-4 text-sm dark:bg-white/5">
+                  {item.vet_name} - {item.vet_location} - {item.date}
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-ink/60 dark:text-paper/60">{copy.appointmentsEmpty}</p>
+            )}
           </div>
-        </div>
+        </ResultCard>
       </section>
     </div>
   );

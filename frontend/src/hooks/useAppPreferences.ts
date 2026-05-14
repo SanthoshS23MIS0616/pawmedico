@@ -16,6 +16,7 @@ export function useAppPreferences() {
   useEffect(() => {
     localStorage.setItem(THEME_KEY, theme);
     document.documentElement.dataset.theme = theme;
+    document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
   return {

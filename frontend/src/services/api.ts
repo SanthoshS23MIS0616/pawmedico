@@ -149,7 +149,7 @@ export function resolveAssetUrl(path?: string | null) {
 export const api = {
   publicApiOrigin,
   resolveAssetUrl,
-  getHealth: async () => (await apiClient.get("/health")).data as { status: string; gemini_configured: boolean },
+  getHealth: async () => (await apiClient.get("/health")).data as { status: string; groq_configured: boolean; ai_provider: string },
   getAuthConfig: async () => (await apiClient.get<AuthConfig>("/auth/config")).data,
   getDashboard: async () => (await apiClient.get<DashboardResponse>("/dashboard")).data,
   getPets: async () => (await apiClient.get<Pet[]>("/pets")).data,

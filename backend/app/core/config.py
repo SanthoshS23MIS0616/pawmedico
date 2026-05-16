@@ -9,10 +9,10 @@ class Settings(BaseSettings):
     app_name: str = "PetMedico API"
     api_v1_prefix: str = "/api/v1"
     environment: str = "development"
-    google_api_key: str | None = None
-    gemini_api_key: str | None = None
-    gemini_model: str = "gemini-1.5-pro"
-    gemini_confidence_threshold: float = 60.0
+    groq_api_key: str | None = None
+    groq_text_model: str = "llama-3.3-70b-versatile"
+    groq_vision_model: str = "meta-llama/llama-4-scout-17b-16e-instruct"
+    ai_confidence_threshold: float = 60.0
     supabase_url: str | None = None
     supabase_anon_key: str | None = None
     supabase_service_role_key: str | None = None
@@ -54,10 +54,5 @@ class Settings(BaseSettings):
     @property
     def supabase_storage_enabled(self) -> bool:
         return self.supabase_auth_enabled and bool(self.supabase_storage_bucket)
-
-    @property
-    def active_gemini_api_key(self) -> str | None:
-        return self.gemini_api_key or self.google_api_key
-
 
 settings = Settings()

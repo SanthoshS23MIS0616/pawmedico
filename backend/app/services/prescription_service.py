@@ -2,7 +2,7 @@ from datetime import datetime
 from pathlib import Path
 
 from app.schemas.analysis import PrescriptionRequest
-from app.services.gemini_service import gemini_service
+from app.services.groq_service import groq_service
 from app.utils.pdf_utils import render_prescription_document
 
 
@@ -38,7 +38,7 @@ class PrescriptionService:
             ],
             "explanation": "A conservative care plan was created because live AI generation was unavailable. Use this as supportive guidance and confirm medications with a veterinarian.",
             "source": "fallback",
-            "warning": "Gemini key not configured; prescription used the safe fallback plan.",
+            "warning": "Groq key not configured; prescription used the safe fallback plan.",
         }
 
     async def generate(self, payload: PrescriptionRequest) -> dict:
@@ -67,11 +67,11 @@ Return exactly this JSON shape:
   "explanation": "string"
 }}
 """
-        plan = await gemini_service.generate_json(prompt)
+        plan = await groq_service.generate_json(prompt)
         if not plan:
             result = self._fallback_plan(payload)
         else:
-            result = {**plan, "source": "gemini", "warning": None}
+            result = {**plan, "source": "groq", "warning": None}
         filename = f"prescription-{payload.pet_no or payload.pet_name.lower().replace(' ', '-')}-{int(datetime.utcnow().timestamp())}.pdf"
         pdf_path = self.output_dir / filename
         render_prescription_document(result, payload, pdf_path)
@@ -80,4 +80,3 @@ Return exactly this JSON shape:
 
 
 prescription_service = PrescriptionService()
-

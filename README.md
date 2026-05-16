@@ -3,7 +3,7 @@
 PetMedico is a structured FastAPI + React veterinary care platform with dual-mode operation:
 
 - Demo mode works locally without live keys.
-- Live mode activates automatically when Supabase and Gemini environment variables are present.
+- Live mode activates automatically when Supabase and Groq environment variables are present.
 
 The repository now keeps the existing gallery, recommender, AI analysis, prescription, dashboard, appointments, vaccinations, and chat flows while upgrading the project into a production-ready full-stack structure.
 
@@ -57,8 +57,7 @@ petmedico/
 Create `backend/.env` from `backend/.env.example`.
 
 ```env
-GOOGLE_API_KEY=
-GEMINI_API_KEY=
+GROQ_API_KEY=
 SUPABASE_URL=
 SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
@@ -69,7 +68,7 @@ ENVIRONMENT=development
 
 Notes:
 
-- You can provide either `GOOGLE_API_KEY` or `GEMINI_API_KEY`.
+- `GROQ_API_KEY` powers chat, prescription generation, and image analysis.
 - `SUPABASE_SERVICE_ROLE_KEY` is backend-only.
 - Normal user CRUD should flow through the anon key plus user JWT so row-level security applies.
 
@@ -115,7 +114,7 @@ Backend docs: `http://localhost:8000/docs`
 2. Run `backend/app/data/supabase_schema.sql` in the Supabase SQL editor.
 3. Create a public storage bucket named `pet-photos`.
 4. Add row-level security policies for bucket objects scoped to `auth.uid()`.
-5. Add your Supabase values to both backend and frontend env files.
+5. Add your Supabase values to both backend and frontend env files, plus `GROQ_API_KEY` in the backend env file.
 6. Restart both apps.
 7. Confirm `GET /api/v1/auth/config` and `GET /api/v1/health` report live readiness.
 
@@ -142,4 +141,4 @@ Backend docs: `http://localhost:8000/docs`
 
 ## Current limitation
 
-Gemini access is still wrapped behind `backend/app/services/gemini_service.py`, but the current Google SDK in use is deprecated. The wrapper is isolated so the SDK can be swapped cleanly once you provide the final live key and decide on the replacement package.
+Groq access is wrapped behind `backend/app/services/groq_service.py`. Live AI verification still depends on you adding a real `GROQ_API_KEY`, and the vision path also depends on Groq vision model availability for your account.

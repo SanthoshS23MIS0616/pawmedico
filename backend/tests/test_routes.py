@@ -203,7 +203,7 @@ def test_chat_reply() -> None:
     assert response.status_code == 200
     payload = response.json()
     assert payload["reply"]
-    assert payload["source"] in {"fallback", "gemini"}
+    assert payload["source"] in {"fallback", "groq"}
 
 
 def test_breed_identify_rejects_invalid_file_type() -> None:
@@ -242,7 +242,7 @@ def test_generate_prescription() -> None:
     payload = response.json()
     assert payload["disease"]
     assert len(payload["prescription_plan"]) >= 1
-    assert payload["source"] in {"fallback", "gemini"}
+    assert payload["source"] in {"fallback", "groq"}
 
 
 def test_download_missing_prescription_file() -> None:

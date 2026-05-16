@@ -5,7 +5,7 @@ import numpy as np
 from PIL import Image
 
 from app.core.config import settings
-from app.services.gemini_service import gemini_service
+from app.services.groq_service import groq_service
 
 try:
     import cv2
@@ -67,20 +67,20 @@ class ImageService:
             "severity (low/moderate/high), confidence percentage, 3 care tips, and whether a vet visit is needed. "
             "Always include a confidence percentage in the answer."
         )
-        gemini_text = await gemini_service.analyze_image(image_bytes, mime_type, prompt)
+        groq_text = await groq_service.analyze_image(image_bytes, mime_type, prompt)
         fallback_condition, fallback_confidence, report = await asyncio.to_thread(self._basic_skin_report, image_bytes)
-        if gemini_text:
-            lower_text = gemini_text.lower()
+        if groq_text:
+            lower_text = groq_text.lower()
             severity = "high" if "high" in lower_text or "urgent" in lower_text else "moderate" if "moderate" in lower_text else "low"
-            confidence, confidence_label, warning = gemini_service.evaluate_confidence(gemini_text, fallback=84.0)
+            confidence, confidence_label, warning = groq_service.evaluate_confidence(groq_text, fallback=84.0)
             needs_vet = "yes" in lower_text or "vet" in lower_text or severity == "high" or confidence_label == "low"
             return {
-                "condition": gemini_text.splitlines()[0][:120],
+                "condition": groq_text.splitlines()[0][:120],
                 "confidence": confidence,
                 "severity": severity,
                 "care_tips": ["Keep the area clean and dry.", "Prevent scratching or licking.", "Monitor spreading or discharge."],
                 "needs_vet": needs_vet,
-                "analysis_source": "gemini",
+                "analysis_source": "groq",
                 "confidence_label": confidence_label,
                 "warning": warning,
                 "image_report": report,
@@ -93,8 +93,8 @@ class ImageService:
             "care_tips": ["Clean the affected skin gently.", "Avoid harsh shampoos until reviewed.", "See a vet if swelling, odor, or pain appears."],
             "needs_vet": severity != "low",
             "analysis_source": "opencv-fallback",
-            "confidence_label": "low" if fallback_confidence < settings.gemini_confidence_threshold else "medium",
-            "warning": "Gemini key not configured; showing fallback image analysis." if not gemini_service.configured else None,
+            "confidence_label": "low" if fallback_confidence < settings.ai_confidence_threshold else "medium",
+            "warning": "Groq key not configured; showing fallback image analysis." if not groq_service.configured else None,
             "image_report": report,
         }
 
@@ -110,11 +110,11 @@ class ImageService:
 
     async def identify_animal_and_breed(self, image_bytes: bytes, mime_type: str) -> dict:
         prompt = "Identify the animal and breed from this image. Return two short lines: Animal: <type> and Breed: <breed>."
-        gemini_text = await gemini_service.analyze_image(image_bytes, mime_type, prompt)
-        if gemini_text:
+        groq_text = await groq_service.analyze_image(image_bytes, mime_type, prompt)
+        if groq_text:
             animal = "Unknown"
             breed = "Unknown"
-            for line in gemini_text.splitlines():
+            for line in groq_text.splitlines():
                 if ":" not in line:
                     continue
                 key, value = [item.strip() for item in line.split(":", 1)]
@@ -122,13 +122,13 @@ class ImageService:
                     animal = value
                 if key.lower().startswith("breed"):
                     breed = value
-            confidence, confidence_label, warning = gemini_service.evaluate_confidence(gemini_text, fallback=86.0)
+            confidence, confidence_label, warning = groq_service.evaluate_confidence(groq_text, fallback=86.0)
             return {
                 "animal": animal,
                 "breed": breed,
                 "confidence": confidence,
-                "description": "Detected with Gemini vision.",
-                "analysis_source": "gemini",
+                "description": "Detected with Groq vision.",
+                "analysis_source": "groq",
                 "confidence_label": confidence_label,
                 "info_link": f"https://www.google.com/search?q={breed.replace(' ', '+')}+breed" if breed != "Unknown" else None,
                 "warning": warning,
@@ -143,9 +143,9 @@ class ImageService:
                 "confidence": round(confidence, 2),
                 "description": "Predicted with the bundled TensorFlow breed classifier.",
                 "analysis_source": "tensorflow",
-                "confidence_label": "medium" if confidence >= settings.gemini_confidence_threshold else "low",
+                "confidence_label": "medium" if confidence >= settings.ai_confidence_threshold else "low",
                 "info_link": f"https://www.akc.org/dog-breeds/{breed.lower().replace(' ', '-')}/",
-                "warning": "Gemini key not configured; using the local dog-only classifier.",
+                "warning": "Groq key not configured; using the local dog-only classifier.",
             }
 
         return {
@@ -156,7 +156,7 @@ class ImageService:
             "analysis_source": "fallback",
             "confidence_label": "low",
             "info_link": None,
-            "warning": "Add GEMINI_API_KEY to enable full animal and breed recognition.",
+            "warning": "Add GROQ_API_KEY to enable full animal and breed recognition.",
         }
 
 

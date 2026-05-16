@@ -19,11 +19,13 @@ async def health_check() -> dict:
         "environment": settings.environment,
         "repository_mode": repository.mode,
         "supabase": supabase,
-        "gemini_configured": bool(settings.active_gemini_api_key),
-        "gemini": {
-            "configured": bool(settings.active_gemini_api_key),
-            "model": settings.gemini_model,
-            "confidence_threshold": settings.gemini_confidence_threshold,
+        "ai_provider": "groq",
+        "groq_configured": bool(settings.groq_api_key),
+        "groq": {
+            "configured": bool(settings.groq_api_key),
+            "text_model": settings.groq_text_model,
+            "vision_model": settings.groq_vision_model,
+            "confidence_threshold": settings.ai_confidence_threshold,
         },
         "demo_mode": {
             "available": True,

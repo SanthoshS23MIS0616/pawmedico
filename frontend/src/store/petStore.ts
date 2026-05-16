@@ -12,7 +12,7 @@ type PetStore = {
   selectPet: (petId: string | null) => void;
 };
 
-export const usePetStore = create<PetStore>((set) => ({
+export const usePetStore = create<PetStore>((set, get) => ({
   pets: [],
   dashboard: null,
   selectedPetId: null,
@@ -22,14 +22,16 @@ export const usePetStore = create<PetStore>((set) => ({
     set({ loading: true, error: null });
     try {
       const dashboard = await api.getDashboard();
+      const existingSelection = get().selectedPetId;
+      const nextSelectedId = dashboard.pets.some((pet) => pet.id === existingSelection) ? existingSelection : dashboard.pets[0]?.id ?? null;
       set({
         dashboard,
         pets: dashboard.pets,
-        selectedPetId: dashboard.pets[0]?.id ?? null,
+        selectedPetId: nextSelectedId,
         loading: false
       });
     } catch (error) {
-      set({ error: error instanceof Error ? error.message : "Failed to load dashboard", loading: false });
+      set({ error: api.normalizeError(error), loading: false });
     }
   },
   selectPet(petId) {

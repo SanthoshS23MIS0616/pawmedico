@@ -1,20 +1,35 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 
+import { ImageUploader } from "../components/ImageUploader";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { PetCard } from "../components/PetCard";
 import { WeightChart } from "../components/WeightChart";
+import { uploadPetPhotoToSupabase } from "../lib/supabase";
 import { api } from "../services/api";
+import { useAuthStore } from "../store/authStore";
 import { usePetStore } from "../store/petStore";
 
 export function DashboardPage() {
+  const { authConfig, initialized, mode, user } = useAuthStore((state) => ({
+    authConfig: state.authConfig,
+    initialized: state.initialized,
+    mode: state.mode,
+    user: state.user
+  }));
   const { dashboard, pets, selectedPetId, loading, error, refresh, selectPet } = usePetStore();
-  const [petForm, setPetForm] = useState({ owner_id: "demo-user", name: "", species: "Dog", breed: "", dob: "", weight: "", photo_url: "" });
+  const [petForm, setPetForm] = useState({ name: "", species: "Dog", breed: "", dob: "", weight: "", photo_url: "" });
+  const [petPhotoFile, setPetPhotoFile] = useState<File | null>(null);
   const [recordForm, setRecordForm] = useState({ date: "", symptoms: "", diagnosis: "", severity: "moderate", notes: "" });
   const [weightForm, setWeightForm] = useState({ weight_kg: "", recorded_date: "" });
+  const [editForm, setEditForm] = useState({ name: "", species: "", breed: "", dob: "", weight: "", photo_url: "" });
+  const [editPhotoFile, setEditPhotoFile] = useState<File | null>(null);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    refresh();
-  }, [refresh]);
+    if (initialized) {
+      void refresh();
+    }
+  }, [initialized, refresh]);
 
   useEffect(() => {
     const selectedProfile = localStorage.getItem("pawmedic-selected-profile");
@@ -24,27 +39,78 @@ export function DashboardPage() {
       setPetForm((current) => ({
         ...current,
         species: current.species === "Dog" && parsed.animal ? parsed.animal : current.species || parsed.animal || "Dog",
-        breed: current.breed || parsed.breed || "",
+        breed: current.breed || parsed.breed || ""
       }));
-    } catch {}
+    } catch {
+      return;
+    }
   }, []);
 
   const selectedPet = useMemo(() => pets.find((pet) => pet.id === selectedPetId) ?? null, [pets, selectedPetId]);
   const selectedWeights = useMemo(() => dashboard?.weight_logs.filter((item) => item.pet_id === selectedPetId) ?? [], [dashboard, selectedPetId]);
 
+  useEffect(() => {
+    if (!selectedPet) return;
+    setEditForm({
+      name: selectedPet.name,
+      species: selectedPet.species,
+      breed: selectedPet.breed,
+      dob: selectedPet.dob || "",
+      weight: selectedPet.weight ? String(selectedPet.weight) : "",
+      photo_url: selectedPet.photo_url || ""
+    });
+    setEditPhotoFile(null);
+  }, [selectedPet]);
+
+  async function uploadPhoto(file: File) {
+    if (authConfig?.storage_ready && mode === "authenticated" && user) {
+      const uploaded = await uploadPetPhotoToSupabase({ userId: user.id, file, bucket: authConfig.storage_bucket });
+      return uploaded.publicUrl;
+    }
+    const uploaded = await api.uploadPetPhoto(file);
+    return uploaded.public_url;
+  }
+
   async function submitPet(event: FormEvent) {
     event.preventDefault();
-    await api.createPet({
-      owner_id: petForm.owner_id,
-      name: petForm.name,
-      species: petForm.species,
-      breed: petForm.breed,
-      dob: petForm.dob || null,
-      weight: petForm.weight ? Number(petForm.weight) : null,
-      photo_url: petForm.photo_url || null
-    });
-    setPetForm({ owner_id: "demo-user", name: "", species: "Dog", breed: "", dob: "", weight: "", photo_url: "" });
-    await refresh();
+    setSaving(true);
+    try {
+      const photoUrl = petPhotoFile ? await uploadPhoto(petPhotoFile) : petForm.photo_url || null;
+      await api.createPet({
+        name: petForm.name,
+        species: petForm.species,
+        breed: petForm.breed,
+        dob: petForm.dob || null,
+        weight: petForm.weight ? Number(petForm.weight) : null,
+        photo_url: photoUrl
+      });
+      setPetForm({ name: "", species: "Dog", breed: "", dob: "", weight: "", photo_url: "" });
+      setPetPhotoFile(null);
+      await refresh();
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function submitPetUpdate(event: FormEvent) {
+    event.preventDefault();
+    if (!selectedPetId) return;
+    setSaving(true);
+    try {
+      const photoUrl = editPhotoFile ? await uploadPhoto(editPhotoFile) : editForm.photo_url || null;
+      await api.updatePet(selectedPetId, {
+        name: editForm.name,
+        species: editForm.species,
+        breed: editForm.breed,
+        dob: editForm.dob || null,
+        weight: editForm.weight ? Number(editForm.weight) : null,
+        photo_url: photoUrl
+      });
+      setEditPhotoFile(null);
+      await refresh();
+    } finally {
+      setSaving(false);
+    }
   }
 
   async function submitRecord(event: FormEvent) {
@@ -120,8 +186,11 @@ export function DashboardPage() {
                 <input className="input" value={petForm.photo_url} onChange={(event) => setPetForm((value) => ({ ...value, photo_url: event.target.value }))} />
               </div>
             </div>
-            <button className="button-primary mt-5" type="submit">
-              Save pet
+            <div className="mt-5">
+              <ImageUploader file={petPhotoFile} onFileChange={setPetPhotoFile} helper="Upload a pet photo. Live mode uses Supabase Storage; demo mode falls back to local uploads." />
+            </div>
+            <button className="button-primary mt-5" type="submit" disabled={saving}>
+              {saving ? "Saving..." : "Save pet"}
             </button>
           </form>
         </div>
@@ -132,9 +201,10 @@ export function DashboardPage() {
             {selectedPet ? (
               <div className="mt-5 grid gap-6 lg:grid-cols-2">
                 <div className="rounded-[24px] bg-sand p-5">
+                  {selectedPet.photo_url ? <img className="mb-4 h-48 w-full rounded-[20px] object-cover" src={api.resolveAssetUrl(selectedPet.photo_url) ?? undefined} alt={selectedPet.name} /> : null}
                   <p className="text-lg font-black">{selectedPet.name}</p>
                   <p className="mt-2 text-sm text-ink/70">
-                    {selectedPet.species} • {selectedPet.breed}
+                    {selectedPet.species} | {selectedPet.breed}
                   </p>
                   <p className="mt-4 text-sm text-ink/70">DOB: {selectedPet.dob || "Not recorded"}</p>
                   <p className="mt-1 text-sm text-ink/70">Weight: {selectedPet.weight ? `${selectedPet.weight} kg` : "Not recorded"}</p>
@@ -148,6 +218,26 @@ export function DashboardPage() {
               <p className="mt-5 text-sm text-ink/60">Choose or create a pet to unlock records, weight tracking, and vaccinations.</p>
             )}
           </div>
+
+          {selectedPet ? (
+            <form className="panel p-6" onSubmit={submitPetUpdate}>
+              <h3 className="text-xl font-black">Edit selected pet</h3>
+              <div className="mt-5 grid gap-4 md:grid-cols-2">
+                <input className="input" value={editForm.name} onChange={(event) => setEditForm((value) => ({ ...value, name: event.target.value }))} placeholder="Name" required />
+                <input className="input" value={editForm.species} onChange={(event) => setEditForm((value) => ({ ...value, species: event.target.value }))} placeholder="Species" required />
+                <input className="input" value={editForm.breed} onChange={(event) => setEditForm((value) => ({ ...value, breed: event.target.value }))} placeholder="Breed" required />
+                <input className="input" type="number" step="0.1" value={editForm.weight} onChange={(event) => setEditForm((value) => ({ ...value, weight: event.target.value }))} placeholder="Weight kg" />
+                <input className="input" type="date" value={editForm.dob} onChange={(event) => setEditForm((value) => ({ ...value, dob: event.target.value }))} />
+                <input className="input" value={editForm.photo_url} onChange={(event) => setEditForm((value) => ({ ...value, photo_url: event.target.value }))} placeholder="Existing photo URL" />
+              </div>
+              <div className="mt-5">
+                <ImageUploader file={editPhotoFile} onFileChange={setEditPhotoFile} helper="Replace the current pet photo with a new upload." />
+              </div>
+              <button className="button-primary mt-5" type="submit" disabled={saving}>
+                {saving ? "Updating..." : "Update pet"}
+              </button>
+            </form>
+          ) : null}
 
           <form className="panel p-6" onSubmit={submitRecord}>
             <h3 className="text-xl font-black">Add health record</h3>

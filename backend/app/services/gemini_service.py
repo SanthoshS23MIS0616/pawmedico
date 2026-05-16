@@ -14,8 +14,8 @@ except Exception:
 class GeminiService:
     def __init__(self) -> None:
         self._configured = False
-        if genai and settings.google_api_key:
-            genai.configure(api_key=settings.google_api_key)
+        if genai and settings.active_gemini_api_key:
+            genai.configure(api_key=settings.active_gemini_api_key)
             self._configured = True
 
     @property

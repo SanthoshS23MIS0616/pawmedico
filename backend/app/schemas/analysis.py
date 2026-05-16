@@ -148,6 +148,11 @@ class NearbyVet(BaseModel):
     latitude: float
     longitude: float
     distance_km: float
+    address: str | None = None
+    phone: str | None = None
+    website: str | None = None
+    opening_hours: str | None = None
+    open_now: bool | None = None
     map_link: str
     source: str
 

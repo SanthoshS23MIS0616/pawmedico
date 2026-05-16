@@ -6,6 +6,17 @@ from app.schemas.analysis import NearbyVetsRequest
 
 
 class VetLocatorService:
+    @staticmethod
+    def _format_address(tags: dict) -> str | None:
+        pieces = [
+            tags.get("addr:housenumber"),
+            tags.get("addr:street"),
+            tags.get("addr:suburb"),
+            tags.get("addr:city"),
+        ]
+        address = ", ".join(part for part in pieces if part)
+        return address or None
+
     async def find_nearby(self, payload: NearbyVetsRequest) -> dict:
         query = f"""
 [out:json];
@@ -25,13 +36,19 @@ out body 20;
                 lon = row.get("lon")
                 if lat is None or lon is None:
                     continue
+                tags = row.get("tags", {})
                 distance = self._distance_km(payload.latitude, payload.longitude, lat, lon)
                 vets.append(
                     {
-                        "name": row.get("tags", {}).get("name", "Veterinary clinic"),
+                        "name": tags.get("name", "Veterinary clinic"),
                         "latitude": lat,
                         "longitude": lon,
                         "distance_km": round(distance, 2),
+                        "address": self._format_address(tags),
+                        "phone": tags.get("phone") or tags.get("contact:phone"),
+                        "website": tags.get("website") or tags.get("contact:website"),
+                        "opening_hours": tags.get("opening_hours"),
+                        "open_now": None if not tags.get("opening_hours") else None,
                         "map_link": f"https://www.google.com/maps/search/?api=1&query={lat},{lon}",
                         "source": "openstreetmap",
                     }
@@ -46,6 +63,11 @@ out body 20;
                         "latitude": payload.latitude,
                         "longitude": payload.longitude,
                         "distance_km": 0.8,
+                        "address": "Demo mode fallback",
+                        "phone": None,
+                        "website": None,
+                        "opening_hours": None,
+                        "open_now": None,
                         "map_link": f"https://www.google.com/maps/search/?api=1&query={payload.latitude},{payload.longitude}",
                         "source": "demo-fallback",
                     }
@@ -66,4 +88,3 @@ out body 20;
 
 
 vet_locator_service = VetLocatorService()
-

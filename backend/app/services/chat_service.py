@@ -1,13 +1,14 @@
 from typing import AsyncIterator
 
+from app.core.auth import AuthContext
 from app.schemas.analysis import ChatRequest
 from app.services.gemini_service import gemini_service
 from app.services.repository import repository
 
 
 class ChatService:
-    async def reply(self, payload: ChatRequest) -> dict:
-        pet = repository.get_pet(payload.pet_id) if payload.pet_id else None
+    async def reply(self, payload: ChatRequest, auth: AuthContext | None = None) -> dict:
+        pet = await repository.get_pet(auth, payload.pet_id) if payload.pet_id and auth else None
         profile = f"Pet context: {pet}" if pet else "No pet profile attached."
         prompt = (
             f"You are PawBot, a veterinary assistant. Reply in language {payload.language}. "
@@ -24,11 +25,11 @@ class ChatService:
         else:
             source = "gemini"
             warning = None
-        repository.add_chat_message(payload.pet_id, payload.message, response)
+        await repository.add_chat_message(auth, payload.pet_id, payload.message, response)
         return {"reply": response, "source": source, "warning": warning}
 
-    async def stream_reply(self, payload: ChatRequest) -> AsyncIterator[str]:
-        pet = repository.get_pet(payload.pet_id) if payload.pet_id else None
+    async def stream_reply(self, payload: ChatRequest, auth: AuthContext | None = None) -> AsyncIterator[str]:
+        pet = await repository.get_pet(auth, payload.pet_id) if payload.pet_id and auth else None
         profile = f"Pet context: {pet}" if pet else "No pet profile attached."
         prompt = f"You are PawBot. Reply in language {payload.language}. {profile}\nUser: {payload.message}"
         async for chunk in gemini_service.stream_chat(prompt):
@@ -36,4 +37,3 @@ class ChatService:
 
 
 chat_service = ChatService()
-

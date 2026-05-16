@@ -10,12 +10,15 @@ class Settings(BaseSettings):
     api_v1_prefix: str = "/api/v1"
     environment: str = "development"
     google_api_key: str | None = None
+    gemini_api_key: str | None = None
     gemini_model: str = "gemini-1.5-pro"
     gemini_confidence_threshold: float = 60.0
     supabase_url: str | None = None
     supabase_anon_key: str | None = None
     supabase_service_role_key: str | None = None
+    supabase_storage_bucket: str = "pet-photos"
     allowed_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
+    public_api_url: str | None = None
     default_rate_limit: str = "60/minute"
     model_config = SettingsConfigDict(
         env_file=BASE_DIR / ".env",
@@ -39,6 +42,22 @@ class Settings(BaseSettings):
     @property
     def cors_origins(self) -> list[str]:
         return [item.strip() for item in self.allowed_origins.split(",") if item.strip()]
+
+    @property
+    def supabase_auth_enabled(self) -> bool:
+        return bool(self.supabase_url and self.supabase_anon_key)
+
+    @property
+    def supabase_admin_enabled(self) -> bool:
+        return bool(self.supabase_url and self.supabase_service_role_key)
+
+    @property
+    def supabase_storage_enabled(self) -> bool:
+        return self.supabase_auth_enabled and bool(self.supabase_storage_bucket)
+
+    @property
+    def active_gemini_api_key(self) -> str | None:
+        return self.gemini_api_key or self.google_api_key
 
 
 settings = Settings()

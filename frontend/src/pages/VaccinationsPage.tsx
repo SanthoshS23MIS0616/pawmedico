@@ -1,12 +1,14 @@
 import { FormEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { ResultCard } from "../components/ResultCard";
 import { api, Appointment, Pet, Vaccination } from "../services/api";
-import { AppLanguage, t } from "../utils/translations";
+import { useAuthStore } from "../store/authStore";
 
-export function VaccinationsPage({ language }: { language: AppLanguage }) {
-  const copy = t(language);
+export function VaccinationsPage() {
+  const { t } = useTranslation();
+  const initialized = useAuthStore((state) => state.initialized);
   const [pets, setPets] = useState<Pet[]>([]);
   const [vaccinations, setVaccinations] = useState<Vaccination[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -16,16 +18,21 @@ export function VaccinationsPage({ language }: { language: AppLanguage }) {
 
   async function refresh() {
     setLoading(true);
-    const [petsData, vaccinationData, appointmentData] = await Promise.all([api.getPets(), api.getVaccinations(), api.getAppointments()]);
-    setPets(petsData);
-    setVaccinations(vaccinationData);
-    setAppointments(appointmentData);
-    setLoading(false);
+    try {
+      const [petsData, vaccinationData, appointmentData] = await Promise.all([api.getPets(), api.getVaccinations(), api.getAppointments()]);
+      setPets(petsData);
+      setVaccinations(vaccinationData);
+      setAppointments(appointmentData);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
-    refresh();
-  }, []);
+    if (initialized) {
+      void refresh();
+    }
+  }, [initialized]);
 
   async function submitVaccination(event: FormEvent) {
     event.preventDefault();
@@ -46,8 +53,8 @@ export function VaccinationsPage({ language }: { language: AppLanguage }) {
       {loading ? <LoadingSpinner label="Loading reminders and appointments..." /> : null}
 
       <section className="panel p-8">
-        <h1 className="text-3xl font-black">{copy.vaccinationsTitle}</h1>
-        <p className="mt-3 text-sm text-ink/70 dark:text-paper/70">{copy.vaccinationsBody}</p>
+        <h1 className="text-3xl font-black">{t("vaccinationsTitle")}</h1>
+        <p className="mt-3 text-sm text-ink/70 dark:text-paper/70">{t("vaccinationsBody")}</p>
       </section>
 
       <section className="grid gap-6 lg:grid-cols-2">
@@ -102,7 +109,7 @@ export function VaccinationsPage({ language }: { language: AppLanguage }) {
                 </div>
               ))
             ) : (
-              <p className="text-sm text-ink/60 dark:text-paper/60">{copy.vaccinesEmpty}</p>
+              <p className="text-sm text-ink/60 dark:text-paper/60">{t("vaccinesEmpty")}</p>
             )}
           </div>
         </ResultCard>
@@ -116,7 +123,7 @@ export function VaccinationsPage({ language }: { language: AppLanguage }) {
                 </div>
               ))
             ) : (
-              <p className="text-sm text-ink/60 dark:text-paper/60">{copy.appointmentsEmpty}</p>
+              <p className="text-sm text-ink/60 dark:text-paper/60">{t("appointmentsEmpty")}</p>
             )}
           </div>
         </ResultCard>

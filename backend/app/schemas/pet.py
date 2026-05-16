@@ -2,7 +2,6 @@ from pydantic import BaseModel, Field
 
 
 class PetCreate(BaseModel):
-    owner_id: str = "demo-user"
     name: str
     species: str
     breed: str
@@ -12,8 +11,18 @@ class PetCreate(BaseModel):
 
 
 class PetResponse(PetCreate):
+    owner_id: str
     id: str
     created_at: str
+
+
+class PetUpdate(BaseModel):
+    name: str | None = None
+    species: str | None = None
+    breed: str | None = None
+    dob: str | None = None
+    weight: float | None = None
+    photo_url: str | None = None
 
 
 class HealthRecordCreate(BaseModel):
@@ -39,6 +48,12 @@ class WeightLogResponse(WeightLogCreate):
     id: str
     pet_id: str
     created_at: str
+
+
+class PhotoUploadResponse(BaseModel):
+    provider: str
+    public_url: str
+    file_path: str
 
 
 class AppointmentCreate(BaseModel):
@@ -79,4 +94,3 @@ class DashboardResponse(BaseModel):
     upcoming_vaccinations: list[VaccinationResponse]
     appointments: list[AppointmentResponse]
     weight_logs: list[WeightLogResponse]
-

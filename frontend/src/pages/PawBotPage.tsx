@@ -1,16 +1,22 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { ChatBubble } from "../components/ChatBubble";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { AppLanguage } from "../lib/i18n";
 import { api } from "../services/api";
-import { AppLanguage, t } from "../utils/translations";
 
-export function PawBotPage({ language: uiLanguage }: { language: AppLanguage }) {
-  const copy = t(uiLanguage);
+export function PawBotPage() {
+  const { i18n, t } = useTranslation();
   const [message, setMessage] = useState("");
-  const [language, setLanguage] = useState<"en" | "ta" | "hi">(uiLanguage);
+  const [language, setLanguage] = useState<"en" | "ta" | "hi">("en");
   const [history, setHistory] = useState<{ role: "user" | "assistant"; text: string }[]>([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const nextLanguage = ((i18n.language as AppLanguage) || "en") as "en" | "ta" | "hi";
+    setLanguage(nextLanguage);
+  }, [i18n.language]);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -51,8 +57,8 @@ export function PawBotPage({ language: uiLanguage }: { language: AppLanguage }) 
   return (
     <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
       <section className="panel p-8">
-        <h1 className="text-3xl font-black">{copy.pawbotTitle}</h1>
-        <p className="mt-3 text-sm text-ink/70 dark:text-paper/70">{copy.pawbotBody}</p>
+        <h1 className="text-3xl font-black">{t("pawbotTitle")}</h1>
+        <p className="mt-3 text-sm text-ink/70 dark:text-paper/70">{t("pawbotBody")}</p>
         <div className="mt-6">
           <label className="label">Reply language</label>
           <select className="input" value={language} onChange={(event) => setLanguage(event.target.value as "en" | "ta" | "hi")}>

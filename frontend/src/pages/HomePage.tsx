@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-
-import { AppLanguage, t } from "../utils/translations";
+import { useTranslation } from "react-i18next";
 
 const cards = [
   { title: "Animal Gallery", body: "Choose an animal visually, open its curated breed gallery, and jump straight into symptom analysis.", to: "/animal-gallery" },
@@ -13,35 +12,31 @@ const cards = [
   { title: "PawBot", body: "Ask pet-care questions with profile-aware AI chat and escalation guidance.", to: "/pawbot" }
 ];
 
-export function HomePage({ language }: { language: AppLanguage }) {
-  const copy = t(language);
+export function HomePage() {
+  const { t } = useTranslation();
 
   return (
     <div className="space-y-8">
       <section className="panel overflow-hidden">
         <div className="grid gap-8 p-8 lg:grid-cols-[1.3fr_0.7fr] lg:p-12">
           <div>
-            <div className="mb-4 inline-flex rounded-full bg-coral/10 px-4 py-2 text-sm font-bold text-coral">{copy.homeBadge}</div>
-            <h1 className="max-w-3xl font-display text-4xl font-black leading-tight sm:text-5xl">
-              {copy.homeTitle}
-            </h1>
-            <p className="mt-5 max-w-2xl text-lg text-ink/70 dark:text-paper/70">
-              {copy.homeBody}
-            </p>
+            <div className="mb-4 inline-flex rounded-full bg-coral/10 px-4 py-2 text-sm font-bold text-coral">{t("homeBadge")}</div>
+            <h1 className="max-w-3xl font-display text-4xl font-black leading-tight sm:text-5xl">{t("homeTitle")}</h1>
+            <p className="mt-5 max-w-2xl text-lg text-ink/70 dark:text-paper/70">{t("homeBody")}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link className="button-primary" to="/dashboard">
-                {copy.homePrimary}
+                {t("homePrimary")}
               </Link>
               <Link className="button-secondary" to="/login">
-                {copy.homeSecondary}
+                {t("homeSecondary")}
               </Link>
             </div>
-            <p className="mt-4 text-sm font-medium text-ink/60 dark:text-paper/60">{copy.homeInstallHint}</p>
+            <p className="mt-4 text-sm font-medium text-ink/60 dark:text-paper/60">{t("homeInstallHint")}</p>
           </div>
           <div className="rounded-[30px] bg-ink p-6 text-white">
             <p className="text-sm font-semibold uppercase tracking-[0.25em] text-gold">Core stack</p>
             <div className="mt-6 grid gap-3">
-              {["React + Vite + Tailwind", "FastAPI + Pydantic", "Supabase-ready auth and storage", "Gemini + TensorFlow + scikit-learn"].map((item) => (
+              {["React + Vite + Tailwind", "FastAPI + Pydantic", "Supabase auth + storage", "Gemini + TensorFlow + scikit-learn"].map((item) => (
                 <div key={item} className="rounded-2xl bg-white/10 px-4 py-3 text-sm">
                   {item}
                 </div>

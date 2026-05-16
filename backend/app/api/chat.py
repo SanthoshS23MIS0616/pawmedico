@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import StreamingResponse
 
+from app.core.auth import AuthContext, get_optional_auth_context
 from app.core.rate_limit import limiter
 from app.schemas.analysis import ChatRequest, ChatResponse
 from app.services.chat_service import chat_service
@@ -10,11 +11,11 @@ router = APIRouter(prefix="/chat", tags=["chat"])
 
 @router.post("", response_model=ChatResponse)
 @limiter.limit("20/minute")
-async def chat(request: Request, payload: ChatRequest) -> ChatResponse:
-    return ChatResponse(**(await chat_service.reply(payload)))
+async def chat(request: Request, payload: ChatRequest, auth: AuthContext | None = Depends(get_optional_auth_context)) -> ChatResponse:
+    return ChatResponse(**(await chat_service.reply(payload, auth)))
 
 
 @router.post("/stream")
 @limiter.limit("20/minute")
-async def chat_stream(request: Request, payload: ChatRequest) -> StreamingResponse:
-    return StreamingResponse(chat_service.stream_reply(payload), media_type="text/event-stream")
+async def chat_stream(request: Request, payload: ChatRequest, auth: AuthContext | None = Depends(get_optional_auth_context)) -> StreamingResponse:
+    return StreamingResponse(chat_service.stream_reply(payload, auth), media_type="text/event-stream")

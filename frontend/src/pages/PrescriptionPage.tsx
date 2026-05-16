@@ -1,8 +1,8 @@
 import { FormEvent, useState } from "react";
 
 import { LoadingSpinner } from "../components/LoadingSpinner";
-import { splitSymptoms } from "../utils/diseaseHelpers";
 import { api } from "../services/api";
+import { splitSymptoms } from "../utils/diseaseHelpers";
 
 export function PrescriptionPage() {
   const [form, setForm] = useState({
@@ -83,7 +83,7 @@ export function PrescriptionPage() {
               <div className="mt-2 space-y-2">
                 {result.prescription_plan.map((item: any, index: number) => (
                   <div key={`${item.medicine}-${index}`} className="rounded-2xl bg-sand p-4 text-sm text-ink/80">
-                    {item.date} {item.time} • {item.medicine} • {item.dosage} • {item.route} • {item.duration}
+                    {item.date} {item.time} | {item.medicine} | {item.dosage} | {item.route} | {item.duration}
                     <div className="mt-1 text-ink/60">{item.notes}</div>
                   </div>
                 ))}
@@ -94,14 +94,14 @@ export function PrescriptionPage() {
               <div className="mt-2 space-y-2">
                 {result.diet_plan.map((item: any, index: number) => (
                   <div key={`${item.food_type}-${index}`} className="rounded-2xl bg-sand p-4 text-sm text-ink/80">
-                    {item.date} {item.feeding_time} • {item.food_type} • {item.quantity}
+                    {item.date} {item.feeding_time} | {item.food_type} | {item.quantity}
                     <div className="mt-1 text-ink/60">{item.notes}</div>
                   </div>
                 ))}
               </div>
             </div>
             {result.pdf_url ? (
-              <a className="button-secondary" href={`http://localhost:8000${result.pdf_url}`} target="_blank" rel="noreferrer">
+              <a className="button-secondary" href={api.resolveAssetUrl(result.pdf_url) ?? "#"} target="_blank" rel="noreferrer">
                 Open PDF
               </a>
             ) : null}

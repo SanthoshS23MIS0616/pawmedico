@@ -1,3 +1,7 @@
+import axios, { AxiosHeaders } from "axios";
+
+import { getStoredAccessToken, getStoredDemoUserId } from "../lib/authStorage";
+
 export type DashboardResponse = {
   metrics: { label: string; value: string }[];
   pets: Pet[];
@@ -5,6 +9,20 @@ export type DashboardResponse = {
   upcoming_vaccinations: Vaccination[];
   appointments: Appointment[];
   weight_logs: WeightLog[];
+};
+
+export type AuthConfig = {
+  provider: string;
+  configured: boolean;
+  sdk_available: boolean;
+  auth_ready: boolean;
+  database_ready: boolean;
+  storage_ready: boolean;
+  google_login_ready: boolean;
+  email_password_ready: boolean;
+  demo_mode_available: boolean;
+  live_mode: boolean;
+  storage_bucket: string;
 };
 
 export type Pet = {
@@ -18,6 +36,8 @@ export type Pet = {
   photo_url?: string | null;
   created_at: string;
 };
+
+export type PetInput = Omit<Pet, "id" | "created_at" | "owner_id">;
 
 export type HealthRecord = {
   id: string;
@@ -58,66 +78,144 @@ export type Appointment = {
   created_at: string;
 };
 
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000/api/v1";
+export type NearbyVet = {
+  name: string;
+  latitude: number;
+  longitude: number;
+  distance_km: number;
+  address?: string | null;
+  phone?: string | null;
+  website?: string | null;
+  opening_hours?: string | null;
+  open_now?: boolean | null;
+  map_link: string;
+  source: string;
+};
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_URL}${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(init?.headers ?? {})
-    },
-    ...init
-  });
+export type PhotoUploadResponse = {
+  provider: string;
+  public_url: string;
+  file_path: string;
+};
 
-  if (!response.ok) {
-    const message = await response.text();
-    throw new Error(message || "Request failed");
+const API_URL = (import.meta.env.VITE_API_URL ?? "http://localhost:8000/api/v1").replace(/\/$/, "");
+const apiBase = new URL(API_URL, window.location.origin);
+const publicApiOrigin = apiBase.origin;
+
+function authHeaders() {
+  const headers: Record<string, string> = {};
+  const token = getStoredAccessToken();
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  } else {
+    const demoUserId = getStoredDemoUserId();
+    if (demoUserId) {
+      headers["X-Demo-User"] = demoUserId;
+    }
   }
+  return headers;
+}
 
-  return response.json() as Promise<T>;
+const apiClient = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json"
+  }
+});
+
+apiClient.interceptors.request.use((config) => {
+  const headers = AxiosHeaders.from(config.headers ?? {});
+  for (const [key, value] of Object.entries(authHeaders())) {
+    headers.set(key, value);
+  }
+  config.headers = headers;
+  return config;
+});
+
+function normalizeError(error: unknown) {
+  if (axios.isAxiosError(error)) {
+    return error.response?.data?.detail || error.response?.data || error.message;
+  }
+  return error instanceof Error ? error.message : "Request failed";
+}
+
+export function resolveAssetUrl(path?: string | null) {
+  if (!path) return null;
+  if (/^https?:\/\//i.test(path)) return path;
+  if (path.startsWith("/")) return `${publicApiOrigin}${path}`;
+  return path;
 }
 
 export const api = {
-  getHealth: () => request<{ status: string; gemini_configured: boolean }>("/health"),
-  getAuthConfig: () => request<{ configured: boolean; google_login_ready: boolean; demo_mode_available: boolean }>("/auth/config"),
-  getDashboard: () => request<DashboardResponse>("/dashboard"),
-  getPets: () => request<Pet[]>("/pets"),
-  createPet: (payload: Omit<Pet, "id" | "created_at">) => request<Pet>("/pets", { method: "POST", body: JSON.stringify(payload) }),
-  createHealthRecord: (petId: string, payload: { date: string; symptoms: string[]; diagnosis: string; severity: string; notes?: string }) =>
-    request<HealthRecord>(`/pets/${petId}/records`, { method: "POST", body: JSON.stringify(payload) }),
-  createWeightLog: (petId: string, payload: { weight_kg: number; recorded_date: string }) =>
-    request<WeightLog>(`/pets/${petId}/weights`, { method: "POST", body: JSON.stringify(payload) }),
-  getVaccinations: () => request<Vaccination[]>("/vaccinations"),
-  createVaccination: (payload: { pet_id: string; vaccine_name: string; given_date: string; next_due_date: string; reminder_sent?: boolean }) =>
-    request<Vaccination>("/vaccinations", { method: "POST", body: JSON.stringify(payload) }),
-  getAppointments: () => request<Appointment[]>("/appointments"),
-  createAppointment: (payload: { pet_id: string; vet_name: string; vet_location: string; date: string; status?: string }) =>
-    request<Appointment>("/appointments", { method: "POST", body: JSON.stringify(payload) }),
-  getSymptomCatalog: (breed?: string) => request<{ breed?: string | null; symptoms: string[]; all_breeds: string[] }>(`/symptoms/catalog${breed ? `?breed=${encodeURIComponent(breed)}` : ""}`),
-  predictSymptoms: (payload: { animal: string; breed?: string | null; symptoms: string[] }) =>
-    request<{ disease: string; severity: string; confidence: number; vet_link?: string | null; matched_symptoms: string[]; advice: string[]; source: string }>("/symptoms/predict", {
-      method: "POST",
-      body: JSON.stringify(payload)
-    }),
-  recommendBreeds: (payload: Record<string, number>) =>
-    request<{ matches: { name: string; similarity: number; url: string; summary: string }[]; source: string; warning?: string | null; dataset_size?: number | null }>("/recommender/breeds", {
-      method: "POST",
-      body: JSON.stringify(payload)
-    }),
-  generatePrescription: (payload: Record<string, unknown>) =>
-    request<{ disease: string; explanation: string; prescription_plan: any[]; diet_plan: any[]; pdf_url?: string | null; source: string; warning?: string | null }>("/prescriptions/generate", {
-      method: "POST",
-      body: JSON.stringify(payload)
-    }),
-  chat: (payload: { message: string; pet_id?: string | null; language: "en" | "ta" | "hi" }) =>
-    request<{ reply: string; source: string; warning?: string | null }>("/chat", { method: "POST", body: JSON.stringify(payload) }),
+  publicApiOrigin,
+  resolveAssetUrl,
+  getHealth: async () => (await apiClient.get("/health")).data as { status: string; gemini_configured: boolean },
+  getAuthConfig: async () => (await apiClient.get<AuthConfig>("/auth/config")).data,
+  getDashboard: async () => (await apiClient.get<DashboardResponse>("/dashboard")).data,
+  getPets: async () => (await apiClient.get<Pet[]>("/pets")).data,
+  createPet: async (payload: PetInput) => (await apiClient.post<Pet>("/pets", payload)).data,
+  updatePet: async (petId: string, payload: Partial<PetInput>) => (await apiClient.patch<Pet>(`/pets/${petId}`, payload)).data,
+  createHealthRecord: async (petId: string, payload: { date: string; symptoms: string[]; diagnosis: string; severity: string; notes?: string }) =>
+    (await apiClient.post<HealthRecord>(`/pets/${petId}/records`, payload)).data,
+  createWeightLog: async (petId: string, payload: { weight_kg: number; recorded_date: string }) =>
+    (await apiClient.post<WeightLog>(`/pets/${petId}/weights`, payload)).data,
+  getVaccinations: async () => (await apiClient.get<Vaccination[]>("/vaccinations")).data,
+  createVaccination: async (payload: { pet_id: string; vaccine_name: string; given_date: string; next_due_date: string; reminder_sent?: boolean }) =>
+    (await apiClient.post<Vaccination>("/vaccinations", payload)).data,
+  getAppointments: async () => (await apiClient.get<Appointment[]>("/appointments")).data,
+  createAppointment: async (payload: { pet_id: string; vet_name: string; vet_location: string; date: string; status?: string }) =>
+    (await apiClient.post<Appointment>("/appointments", payload)).data,
+  getSymptomCatalog: async (breed?: string) =>
+    (
+      await apiClient.get<{ breed?: string | null; symptoms: string[]; all_breeds: string[] }>("/symptoms/catalog", {
+        params: breed ? { breed } : undefined
+      })
+    ).data,
+  predictSymptoms: async (payload: { animal: string; breed?: string | null; symptoms: string[] }) =>
+    (
+      await apiClient.post<{
+        disease: string;
+        severity: string;
+        confidence: number;
+        vet_link?: string | null;
+        matched_symptoms: string[];
+        advice: string[];
+        source: string;
+      }>("/symptoms/predict", payload)
+    ).data,
+  recommendBreeds: async (payload: Record<string, number>) =>
+    (
+      await apiClient.post<{
+        matches: { name: string; similarity: number; url: string; summary: string }[];
+        source: string;
+        warning?: string | null;
+        dataset_size?: number | null;
+      }>("/recommender/breeds", payload)
+    ).data,
+  generatePrescription: async (payload: Record<string, unknown>) =>
+    (
+      await apiClient.post<{
+        disease: string;
+        explanation: string;
+        prescription_plan: Array<Record<string, string>>;
+        diet_plan: Array<Record<string, string>>;
+        pdf_url?: string | null;
+        source: string;
+        warning?: string | null;
+      }>("/prescriptions/generate", payload)
+    ).data,
+  chat: async (payload: { message: string; pet_id?: string | null; language: "en" | "ta" | "hi" }) =>
+    (await apiClient.post<{ reply: string; source: string; warning?: string | null }>("/chat", payload)).data,
   chatStream: async (
     payload: { message: string; pet_id?: string | null; language: "en" | "ta" | "hi" },
     handlers: { onChunk: (chunk: string) => void; onDone?: () => void; onError?: (message: string) => void }
   ) => {
     const response = await fetch(`${API_URL}/chat/stream`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...authHeaders()
+      },
       body: JSON.stringify(payload)
     });
 
@@ -148,23 +246,37 @@ export const api = {
 
     handlers.onDone?.();
   },
-  findNearbyVets: (payload: { latitude: number; longitude: number; radius_km: number }) =>
-    request<{ vets: { name: string; latitude: number; longitude: number; distance_km: number; map_link: string; source: string }[]; warning?: string | null }>("/vets/nearby", {
-      method: "POST",
-      body: JSON.stringify(payload)
-    }),
+  findNearbyVets: async (payload: { latitude: number; longitude: number; radius_km: number }) =>
+    (await apiClient.post<{ vets: NearbyVet[]; warning?: string | null }>("/vets/nearby", payload)).data,
   uploadSkinImage: async (file: File) => {
     const form = new FormData();
     form.append("file", file);
-    const response = await fetch(`${API_URL}/analysis/analyze-skin`, { method: "POST", body: form });
-    if (!response.ok) throw new Error(await response.text());
-    return response.json();
+    const response = await apiClient.post("/analysis/analyze-skin", form, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+    return response.data;
   },
   uploadBreedImage: async (file: File) => {
     const form = new FormData();
     form.append("file", file);
-    const response = await fetch(`${API_URL}/breed/identify`, { method: "POST", body: form });
-    if (!response.ok) throw new Error(await response.text());
-    return response.json();
-  }
+    const response = await apiClient.post("/breed/identify", form, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+    return response.data;
+  },
+  uploadPetPhoto: async (file: File) => {
+    const form = new FormData();
+    form.append("file", file);
+    const response = await apiClient.post<PhotoUploadResponse>("/pets/photos/upload", form, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+    return response.data;
+  },
+  normalizeError
 };

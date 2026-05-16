@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
+import "./lib/i18n";
+import "leaflet/dist/leaflet.css";
 import "./index.css";
 
 if ("serviceWorker" in navigator) {

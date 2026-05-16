@@ -64,6 +64,8 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+pytest-cache-files-*/
+backend/pytest-cache-files-*/
 cover/
 
 # Translations
@@ -92,6 +94,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+supabase/
 
 # IPython
 profile_default/

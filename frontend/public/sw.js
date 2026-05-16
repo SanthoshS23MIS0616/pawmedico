@@ -1,4 +1,4 @@
-const CACHE_NAME = "pawmedic-pro-v1";
+const CACHE_NAME = "petmedico-v1";
 const APP_SHELL = ["/", "/manifest.json"];
 
 self.addEventListener("install", (event) => {

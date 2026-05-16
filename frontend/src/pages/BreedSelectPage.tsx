@@ -37,7 +37,7 @@ export function BreedSelectPage() {
   const heroAnimal = catalog.animals.find((item) => item.id === animal);
 
   function chooseBreed(breed: BreedCard) {
-    localStorage.setItem("pawmedic-selected-profile", JSON.stringify({ animal: breed.animal, breed: breed.name }));
+    localStorage.setItem("petmedico-selected-profile", JSON.stringify({ animal: breed.animal, breed: breed.name }));
     navigate(`/symptom-checker?animal=${encodeURIComponent(breed.animal)}&breed=${encodeURIComponent(breed.name)}`);
   }
 

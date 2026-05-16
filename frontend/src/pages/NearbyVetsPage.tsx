@@ -23,14 +23,14 @@ function MapViewport({ center, vets }: { center: [number, number]; vets: NearbyV
 }
 
 const clinicIcon = L.divIcon({
-  className: "pawmedic-map-pin",
+  className: "petmedico-map-pin",
   html: '<div class="flex h-9 w-9 items-center justify-center rounded-full bg-coral text-sm font-black text-white shadow-lg">+</div>',
   iconSize: [36, 36],
   iconAnchor: [18, 18]
 });
 
 const currentIcon = L.divIcon({
-  className: "pawmedic-map-pin",
+  className: "petmedico-map-pin",
   html: '<div class="flex h-9 w-9 items-center justify-center rounded-full bg-ink px-2 text-xs font-black text-white shadow-lg">YOU</div>',
   iconSize: [46, 36],
   iconAnchor: [23, 18]

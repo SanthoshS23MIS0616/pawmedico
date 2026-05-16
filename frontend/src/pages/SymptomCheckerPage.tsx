@@ -16,7 +16,7 @@ export function SymptomCheckerPage() {
   const [result, setResult] = useState<any | null>(null);
 
   useEffect(() => {
-    const profile = localStorage.getItem("pawmedic-selected-profile");
+    const profile = localStorage.getItem("petmedico-selected-profile");
     if (!profile) return;
     try {
       const parsed = JSON.parse(profile) as { animal?: string; breed?: string };

@@ -1,6 +1,6 @@
 {
-  "name": "PawMedic Pro",
-  "short_name": "PawMedic",
+  "name": "PetMedico",
+  "short_name": "PetMedico",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f6f2e8",

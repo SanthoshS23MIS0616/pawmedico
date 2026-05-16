@@ -50,7 +50,7 @@ export function BreedRecommenderPage() {
             <p className="inline-flex rounded-full bg-coral/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.24em] text-coral">Breed match workflow</p>
             <h1 className="mt-5 text-4xl font-black leading-tight">Find a dog breed that actually fits lifestyle, grooming effort, family needs, and energy expectations.</h1>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-ink/70 dark:text-paper/70">
-              This is now a first-class module in PawMedic Pro. Use it as a preference-based match flow, then jump into the visual animal gallery if you want curated breed browsing.
+              This is now a first-class module in PetMedico. Use it as a preference-based match flow, then jump into the visual animal gallery if you want curated breed browsing.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link className="button-secondary" to="/animal-gallery">

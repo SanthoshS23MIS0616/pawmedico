@@ -32,7 +32,7 @@ export function AnimalSelectPage() {
   );
 
   function selectAnimal(animal: AnimalCard) {
-    localStorage.setItem("pawmedic-selected-animal", animal.id);
+    localStorage.setItem("petmedico-selected-animal", animal.id);
     navigate(`/breed-gallery/${encodeURIComponent(animal.id)}`);
   }
 

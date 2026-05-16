@@ -43,7 +43,7 @@ export function Navbar({
         <NavLink to="/" className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-ink text-lg font-black text-white">PM</div>
           <div>
-            <p className="font-display text-lg font-black">PawMedic Pro</p>
+            <p className="font-display text-lg font-black">PetMedico</p>
             <p className="text-sm text-ink/60 dark:text-paper/70">{t("navTagline")}</p>
           </div>
         </NavLink>

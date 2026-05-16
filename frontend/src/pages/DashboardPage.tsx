@@ -32,7 +32,7 @@ export function DashboardPage() {
   }, [initialized, refresh]);
 
   useEffect(() => {
-    const selectedProfile = localStorage.getItem("pawmedic-selected-profile");
+    const selectedProfile = localStorage.getItem("petmedico-selected-profile");
     if (!selectedProfile) return;
     try {
       const parsed = JSON.parse(selectedProfile) as { animal?: string; breed?: string };

@@ -22,7 +22,7 @@ async def lifespan(_: FastAPI):
 app = FastAPI(
     title=settings.app_name,
     version="2.0.0",
-    description="PawMedic Pro AI-powered veterinary care platform.",
+    description="PetMedico AI-powered veterinary care platform.",
     lifespan=lifespan,
 )
 

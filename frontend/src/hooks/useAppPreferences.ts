@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 import i18n, { AppLanguage, AppTheme } from "../lib/i18n";
 
-const LANGUAGE_KEY = "pawmedic-language";
-const THEME_KEY = "pawmedic-theme";
+const LANGUAGE_KEY = "petmedico-language";
+const THEME_KEY = "petmedico-theme";
 
 export function useAppPreferences() {
   const [language, setLanguageState] = useState<AppLanguage>(() => (localStorage.getItem(LANGUAGE_KEY) as AppLanguage) || "en");

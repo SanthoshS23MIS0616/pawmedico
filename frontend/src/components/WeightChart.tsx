@@ -20,7 +20,7 @@ export function WeightChart({ logs }: { logs: WeightLog[] }) {
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={sorted}>
           <defs>
-            <linearGradient id="pawmedicWeight" x1="0" x2="0" y1="0" y2="1">
+            <linearGradient id="petmedicoWeight" x1="0" x2="0" y1="0" y2="1">
               <stop offset="5%" stopColor="#e76f51" stopOpacity={0.4} />
               <stop offset="95%" stopColor="#e76f51" stopOpacity={0.05} />
             </linearGradient>
@@ -29,7 +29,7 @@ export function WeightChart({ logs }: { logs: WeightLog[] }) {
           <XAxis dataKey="date" fontSize={12} tickMargin={10} />
           <YAxis fontSize={12} tickFormatter={(value) => `${value} kg`} width={64} />
           <Tooltip formatter={(value) => [`${value ?? 0} kg`, "Weight"]} />
-          <Area type="monotone" dataKey="weight" stroke="#e76f51" strokeWidth={3} fill="url(#pawmedicWeight)" />
+          <Area type="monotone" dataKey="weight" stroke="#e76f51" strokeWidth={3} fill="url(#petmedicoWeight)" />
         </AreaChart>
       </ResponsiveContainer>
     </div>

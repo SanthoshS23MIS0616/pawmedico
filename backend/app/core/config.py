@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 
 
 class Settings(BaseSettings):
-    app_name: str = "PawMedic Pro API"
+    app_name: str = "PetMedico API"
     api_v1_prefix: str = "/api/v1"
     environment: str = "development"
     google_api_key: str | None = None

@@ -1,6 +1,6 @@
-# PawMedic Pro
+# PetMedico
 
-PawMedic Pro is a structured FastAPI + React veterinary care platform with dual-mode operation:
+PetMedico is a structured FastAPI + React veterinary care platform with dual-mode operation:
 
 - Demo mode works locally without live keys.
 - Live mode activates automatically when Supabase and Gemini environment variables are present.
@@ -24,7 +24,7 @@ The repository now keeps the existing gallery, recommender, AI analysis, prescri
 ## Project structure
 
 ```text
-pawmedico/
+petmedico/
 +-- backend/
 |   +-- app/
 |   |   +-- api/

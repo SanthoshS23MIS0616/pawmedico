@@ -12,7 +12,7 @@ def render_prescription_document(plan: dict, payload: PrescriptionRequest, outpu
     html = f"""
     <html>
       <body style="font-family: Arial, sans-serif; padding: 24px;">
-        <h1>PawMedic Pro Prescription</h1>
+        <h1>PetMedico Prescription</h1>
         <p><strong>Pet:</strong> {payload.pet_name}</p>
         <p><strong>Animal:</strong> {payload.animal}</p>
         <p><strong>Breed:</strong> {payload.breed or "Unknown"}</p>
@@ -35,4 +35,3 @@ def render_prescription_document(plan: dict, payload: PrescriptionRequest, outpu
         output_path.with_suffix(".html").write_text(html, encoding="utf-8")
         return
     HTML(string=html).write_pdf(str(output_path))
-
